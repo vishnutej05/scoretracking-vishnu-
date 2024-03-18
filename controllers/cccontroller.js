@@ -6,7 +6,8 @@ const codechefstats=async (req, res) => {
             let data = await axios.get(`https://www.codechef.com/users/${req.params.handle}`);
             let dom = new JSDOM(data.data);
             let document = dom.window.document;
-    
+            
+            // get all the links in the problems solved section
             const linksArray = [];
             const linkarr = document.querySelector('section.rating-data-section:nth-child(7) > div:nth-child(2) > p:nth-child(2)').querySelectorAll('a')
             linkarr.forEach(link => {
