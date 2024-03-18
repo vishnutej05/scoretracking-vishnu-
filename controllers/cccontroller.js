@@ -8,7 +8,7 @@ const codechefstats=async (req, res) => {
             let document = dom.window.document;
     
             const linksArray = [];
-            const linkarr = document.querySelector('section.rating-data-section:nth-child(7) > div:nth-child(2) > p:nth-child(2)').querySelectorAll('a')
+            const linkarr = document.querySelector('section.rating-data-section:nth-child(7)').querySelectorAll('a')
             linkarr.forEach(link => {
             const href = link.getAttribute('href');
             const content = link.childNodes[0].data;
