@@ -3,7 +3,6 @@ let moment = require('moment');
 
 
 class Hackerrank{
-
     constructor(handle){
         this.site = "HackerRank"
         this.handle = handle
@@ -22,8 +21,7 @@ class Hackerrank{
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:124.0) Gecko/20100101 Firefox/124.0',
             // 'Cookie': cookieValue
         }
-    }
-    
+    }    
     async is_invalid_handle(){
         try{
             let handle=this.handle;
@@ -41,7 +39,6 @@ class Hackerrank{
         }
         
     }
-
      async get_submissions(last_retrieved){
         let headers=this.headers;
          last_retrieved = moment(last_retrieved).utcOffset('+05:30').format('YYYY-MM-DD HH:mm:ss');
