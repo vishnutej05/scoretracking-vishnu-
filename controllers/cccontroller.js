@@ -54,6 +54,7 @@ const codechefstats = async (req, res) => {
             let dom = new JSDOM(data.data);
             let document = dom.window.document;
 
+
         // Add the scraped data to the response
         res.status(200).send({
             success: true,
@@ -71,6 +72,36 @@ const codechefstats = async (req, res) => {
         });
     } catch (err) {
         res.send({ success: false, error: err });
+
+            
+            // get all the links in the problems solved section
+            const linksArray = [];
+            const linkarr = document.querySelector('section.rating-data-section:nth-child(7)').querySelectorAll('a')
+            linkarr.forEach(link => {
+            const href = link.getAttribute('href');
+            const content = link.childNodes[0].data;
+            linksArray.push({ href, content });
+            });
+    
+            // response data 
+            res.status(200).send({
+                success: true,
+                profile: document.querySelector('.user-details-container').children[0].children[0].src,
+                name: document.querySelector('.user-details-container').children[0].children[1].textContent,
+                currentRating: parseInt(document.querySelector(".rating-number").textContent),
+                highestRating: parseInt(document.querySelector(".rating-number").parentNode.children[4].textContent.split('Rating')[1]),
+                countryFlag: document.querySelector('.user-country-flag').src,
+                countryName: document.querySelector('.user-country-name').textContent,
+                globalRank: parseInt(document.querySelector('.rating-ranks').children[0].children[0].children[0].children[0].innerHTML),
+                countryRank: parseInt(document.querySelector('.rating-ranks').children[0].children[1].children[0].children[0].innerHTML),
+                stars: document.querySelector('.rating').textContent || "unrated",
+                problemsSolved: linkarr.length,
+            });
+        } catch (err) {
+            res.send({ success: false, error: err });
+            
+        }
+
     }
 }
 
