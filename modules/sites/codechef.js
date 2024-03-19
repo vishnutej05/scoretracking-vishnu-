@@ -1,9 +1,16 @@
-const axios = require('axios');
-const jsdom = require("jsdom");
-const { JSDOM } = jsdom;
-const codechefstats=async (req, res) => {
+const axios=require('axios')
+const moment = require('moment');
+const { JSDOM } = require('jsdom');
+
+class Codechef{
+    constructor(handle){
+        this.site = "Codechef";
+        this.handle = handle;
+    }
+    async get_credentials(){
+        let handle=this.handle;
         try {
-            let data = await axios.get(`https://www.codechef.com/users/${req.params.handle}`);
+            let data = await axios.get(`https://www.codechef.com/users/${handle}`);
             let dom = new JSDOM(data.data);
             let document = dom.window.document;
             
@@ -17,7 +24,7 @@ const codechefstats=async (req, res) => {
             });
     
             // response data 
-            res.status(200).send({
+            return({
                 success: true,
                 profile: document.querySelector('.user-details-container').children[0].children[0].src,
                 name: document.querySelector('.user-details-container').children[0].children[1].textContent,
@@ -31,16 +38,15 @@ const codechefstats=async (req, res) => {
                 problemsSolved: linkarr.length,
             });
         } catch (err) {
-            res.send({ success: false, error: err });
+            return({ success: false, error: err });
             
-        }
+        }  
     }
-
-const cc_checkcontroller=async (req, res) => {
-    res.status(200).send("this router for codecehf");
 }
 
-module.exports = {
-    codechefstats,
-    cc_checkcontroller
+async function main(){
+    let codechef = new Codechef("m_2002for2025");   
+    let data = await codechef.get_credentials();
+    console.log(data);
 }
+main();
