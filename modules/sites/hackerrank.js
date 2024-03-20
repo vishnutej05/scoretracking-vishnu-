@@ -1,8 +1,9 @@
 let axios = require('axios');
 let moment = require('moment');
+const { model } = require('mongoose');
 
 
-class Hackerrank{
+class Hackerrankclass{
     constructor(handle){
         this.site = "HackerRank"
         this.handle = handle
@@ -93,10 +94,12 @@ class Hackerrank{
         
     }
 }
-async function main(){
-    let obj=new Hackerrank('21r21a33asd');
-    console.log(await obj.is_invalid_handle());
-    // let data = await obj.get_submissions(moment('2024-03-05 12:00:00'));
-    //  console.log(data.length); 
-}
-main();
+// async function main(){
+//     let obj=new Hackerrank('bhargavdh5');
+//     // console.log(await obj.is_invalid_handle());
+//     let data = await obj.get_submissions(moment('2024-03-05 12:00:00'));
+//      console.log(data); 
+// }
+// main();
+
+module.exports = Hackerrankclass;

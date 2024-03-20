@@ -151,8 +151,8 @@ class Codeforces{
 
 async function main(){
   let obj=new Codeforces('d.2002pullstop');
-  console.log(await obj.rating_graph_data());
-  // let data=await obj.fetchSubmissions(moment('2020-03-05 12:00:00'));
-  // console.log(data.length);
+  // console.log(await obj.rating_graph_data());
+  let data=await obj.fetchSubmissions(moment('2020-03-05 12:00:00'));
+  console.log(data);
 }
 main();

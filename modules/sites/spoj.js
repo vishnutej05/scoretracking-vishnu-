@@ -4,7 +4,7 @@ const axios = require('axios');
 const moment = require('moment');
 
 
-class Spoj{ 
+class Spojclass{ 
     constructor(handle){
         this.site = "Spoj";
         this.handle = handle;
@@ -99,10 +99,13 @@ class Spoj{
 }
 
 
-async function main(){
-    const spoj = new Spoj("bhargavdhasdf5");
-    // const submissions = await spoj.get_submissions(moment('2024-02-17 08:50:08'));
-    // console.log(submissions.length);
-    console.log(await spoj.get_stats());
-}
-main();
+// async function main(){
+//     const spoj = new Spoj("bhargavdh5");
+//     const submissions = await spoj.get_submissions(moment('2023-02-17 08:50:08'));
+//     console.log(submissions);
+//     // console.log(await spoj.get_stats());
+// }
+// main();
+
+
+module.exports = Spojclass;

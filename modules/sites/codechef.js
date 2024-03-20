@@ -1,6 +1,7 @@
 const axios=require('axios')
 const moment = require('moment');
 const { JSDOM } = require('jsdom');
+const cheerio = require('cheerio');
 
 class Codechef{
     constructor(handle){
@@ -41,6 +42,35 @@ class Codechef{
             return({ success: false, error: err });
             
         }  
+    }
+
+    async get_subbmissions(last_retrieved){ 
+        
+        // console.log("page",page); 
+        let acceptedSolutions = [];   
+        let page =1;
+        let handle=this.handle;
+        const baseURL = `https://www.codechef.com/recent/user?page=${page}&user_handle=${handle}&_=1710851539301`;
+        const response = await axios.get(baseURL);
+        const html = response.data;
+        const pagecount = html.max_page;
+        var htmlContent = html.content;
+        const $ = cheerio.load(htmlContent);
+        var rows = $('tr');
+        rows.each(function () {
+            var cols = $(this).find('td');
+            if (cols.length >= 3) {
+                var time = $(cols[0]).attr('title');
+                var problem = $(cols[1]).text().trim();
+                var problemLink = $(cols[1]).find('a').attr('href');
+                var result = $(cols[2]).find('span').attr('title');
+                // console.log(time);
+                if (result === 'accepted') {
+                    acceptedSolutions.push({ time: time, problem: problem, problemLink: `https://www.codechef.com${problemLink}` });
+                }
+            }
+        });    
+        return(acceptedSolutions.length);
     }
 }
 
