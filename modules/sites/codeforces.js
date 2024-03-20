@@ -3,7 +3,7 @@ const moment = require('moment');
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
 
-class Codeforces{
+class Codeforcesclass{
   constructor(handle){
     this.site = "Codeforces";
     this.handle = handle;
@@ -149,10 +149,12 @@ class Codeforces{
 }
 
 
-async function main(){
-  let obj=new Codeforces('d.2002pullstop');
-  // console.log(await obj.rating_graph_data());
-  let data=await obj.fetchSubmissions(moment('2020-03-05 12:00:00'));
-  console.log(data);
-}
-main();
+// async function main(){
+//   let obj=new Codeforces('d.2002pullstop');
+//   // console.log(await obj.rating_graph_data());
+//   let data=await obj.fetchSubmissions(moment('2020-03-05 12:00:00'));
+//   console.log(data);
+// }
+// main();
+
+module.exports = Codeforcesclass;

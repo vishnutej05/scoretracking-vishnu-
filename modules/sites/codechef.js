@@ -3,7 +3,7 @@ const moment = require('moment');
 const { JSDOM } = require('jsdom');
 const cheerio = require('cheerio');
 
-class Codechef{
+class Codechefclass {
     constructor(handle){
         this.site = "Codechef";
         this.handle = handle;
@@ -74,9 +74,11 @@ class Codechef{
     }
 }
 
-async function main(){
-    let codechef = new Codechef("m_2002for2025");   
-    let data = await codechef.get_credentials();
-    console.log(data);
-}
-main();
+// async function main(){
+//     let codechef = new Codechef("m_2002for2025");   
+//     let data = await codechef.get_credentials();
+//     console.log(data);
+// }
+// main();
+
+module.exports = Codechefclass;
