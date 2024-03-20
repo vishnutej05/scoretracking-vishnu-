@@ -9,13 +9,13 @@ const userSchema = new mongoose.Schema({
       "type": "string",
       "required": true
     },
-    "courses_ref": {
-      "type": ["array", "reference"],
-      "items": {
-        "type": "ObjectId",
-        "ref": "Course"
-      }
-    },
+    // "courses_ref": {
+    //   "type": ["array", "reference"],
+    //   "items": {
+    //     "type": "ObjectId",
+    //     "ref": "Course"
+    //   }
+    // },
     "codechef_handle": {
       "type": "string",
       "required": true
@@ -48,7 +48,7 @@ const userSchema = new mongoose.Schema({
     },
     "problems_solved": {
         "type": "ObjectId",
-        "ref": "solved_Problem_db",
+        "ref": "ProblemsSolvedByStudent",
         "required": true
     }
   }

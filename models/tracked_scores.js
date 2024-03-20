@@ -9,6 +9,7 @@ const tracked_scoresSchema = new mongoose.Schema({
     cf_rating: { type: Number, default: 0, required: true },
     hr_solved: { type: Number, default: 0, required: true },
     spoj_solved: { type: Number, default: 0, required: true },
+    
     coursework_score: { type: Number, required: true },
     lc_leaderboard_score: { type: Number, default: 0 },
     cc_leaderboard_score: { type: Number, default: 0 },
