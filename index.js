@@ -3,7 +3,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
 //dbconnect
-// const {databaseconnect}=require("./dbconfig");
+const {databaseconnect}=require("./dbconfig");
 
 const ccrouter = require('./router/codechefscores');
 const lcrouter = require('./router/leetcodescores');
@@ -11,7 +11,9 @@ const hrrouter = require('./router/hackerrankscore');
 const spojrouter = require('./router/spojscores');
 const codeforcesrouter = require('./router/codeforcesscore');
 // dbconnection
-// databaseconnect();
+databaseconnect();
+
+
 // cors
 app.use(cors({
     origin: '*'

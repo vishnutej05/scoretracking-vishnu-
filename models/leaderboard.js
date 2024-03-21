@@ -8,7 +8,7 @@ const leaderboardSchema = new mongoose.Schema({
     cf_leaderboard_score: { type: Number, default: 0 },
     hr_leaderboard_score: { type: Number, default: 0 },
     spoj_leaderboard_score: { type: Number, default: 0 },
-    coursework_score: { type: Number, required: true },
+    // coursework_score: { type: Number, required: true },
     total_leaderboard_score: { type: Number, default: 0 },
 });
 

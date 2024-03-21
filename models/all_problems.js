@@ -11,10 +11,10 @@ const ProblemSchema = new Schema({
 const Problems=mongoose.model('Problem', ProblemSchema);
 
 const ProblemsBySitesSchema = new Schema({
-    CodeChef: [ProblemSchema],
-    Codeforces: [ProblemSchema],
-    HackerRank: [ProblemSchema],
-    Spoj: [ProblemSchema],
+    CodeChef: [{ type: Schema.Types.ObjectId, ref: 'Problem' }],
+    Codeforces: [{ type: Schema.Types.ObjectId, ref: 'Problem' }],
+    HackerRank: [{ type: Schema.Types.ObjectId, ref: 'Problem' }],
+    Spoj: [{ type: Schema.Types.ObjectId, ref: 'Problem' }],
 });
 
 const ProblemsDb=mongoose.model('ProblemsBySites', ProblemsBySitesSchema);

@@ -44,39 +44,97 @@ class Codechefclass {
         }  
     }
 
-    async get_subbmissions(last_retrieved){ 
-        
-        // console.log("page",page); 
-        let acceptedSolutions = [];   
-        let page =1;
-        let handle=this.handle;
-        const baseURL = `https://www.codechef.com/recent/user?page=${page}&user_handle=${handle}&_=1710851539301`;
-        const response = await axios.get(baseURL);
-        const html = response.data;
-        const pagecount = html.max_page;
-        var htmlContent = html.content;
-        const $ = cheerio.load(htmlContent);
-        var rows = $('tr');
-        rows.each(function () {
-            var cols = $(this).find('td');
-            if (cols.length >= 3) {
-                var time = $(cols[0]).attr('title');
-                var problem = $(cols[1]).text().trim();
-                var problemLink = $(cols[1]).find('a').attr('href');
-                var result = $(cols[2]).find('span').attr('title');
-                // console.log(time);
-                if (result === 'accepted') {
-                    acceptedSolutions.push({ time: time, problem: problem, problemLink: `https://www.codechef.com${problemLink}` });
+    async  scrapeRecentActivity( page, existingQuestions,last_retrived) {
+        last_retrived=moment(last_retrived).utcOffset('+05:30').format('YYYY-MM-DD HH:mm:ss'); 
+        let username = this.handle;
+        try {
+            console.log("cycle"+page);
+            var acceptedSolutions = [];
+          
+            const baseURL = `https://www.codechef.com/recent/user?page=${page}&user_handle=${username}&_=1710851539301`;
+            const response = await axios.get(baseURL);
+            const html = response.data;
+    
+            const pagecount = html.max_page;
+            console.log(pagecount);
+            var htmlContent = html.content;
+    
+            const $ = cheerio.load(htmlContent);
+    
+            // Find all table rows
+            var rows = $('tr');
+            let flag=false;
+            rows.each(function () {
+                if(flag)return;
+                var cols = $(this).find('td');
+                if (cols.length >= 3) {
+                    var time = $(cols[0]).attr('title');
+                    var problem = $(cols[1]).text().trim();
+                    var problemLink = $(cols[1]).find('a').attr('href');
+                    var result = $(cols[2]).find('span').attr('title');
+                    //console.log(typeof time);
+                    
+                    //time=(time.split(' ')[2]=="ago")?():(moment(time, 'hh:mm A DD/MM/YY'));
+                    if (result === 'accepted') {
+                        if(time.split(' ')[2]==="ago"){
+                            console.log(time);
+                            let to_check=time.split(' ')[1];
+                            let dt='';
+                            switch(to_check[0]){
+                                case 's':dt='seconds';break;
+                                case 'm':dt='minutes';break;
+                                case 'h':dt='hours';break;
+                            }
+                            const duration = moment.duration(parseInt(time.split(' ')[0]), dt);
+                            time=moment(moment()).subtract(duration);
+                            
+                            time=time.utcOffset('+05:30').format('YYYY-MM-DD HH:mm:ss');
+                            console.log(time);
+    
+                        }else {
+                            time=(moment(time, 'hh:mm A DD/MM/YY'));
+                        }
+    
+                        // Check if the question is not already present
+                        if (!existingQuestions.has(problemLink)) {
+                            time=moment(time).utcOffset('+05:30').format('YYYY-MM-DD HH:mm:ss');
+                            // console.log(last_retrived,time);
+                             if(last_retrived >= time){
+                                flag=true;return;
+                            }
+                            acceptedSolutions.push({ time: time, problem: problem, problemLink: `https://www.codechef.com${problemLink}` });
+                            existingQuestions.add(problemLink);
+                           // Add the question link to the set
+                        }
+                    }
                 }
+            });
+
+            if (page < pagecount && !flag ) {
+                const nextPageSolutions = await this.scrapeRecentActivity( page + 1, existingQuestions,last_retrived);
+                // Concatenate the solutions from current page and next page
+                acceptedSolutions = acceptedSolutions.concat(nextPageSolutions);
+                
             }
-        });    
-        return(acceptedSolutions.length);
+            return acceptedSolutions;
+    
+        } catch (error) {
+            console.error('Error occurred while scraping recent activity:', error);
+            throw error; 
+        }
+}
+
+
+    async fetch_from_time(last_retrived){
+        last_retrived=moment(last_retrived).utcOffset('+05:30').format('YYYY-MM-DD HH:mm:ss');
+        return this.scrapeRecentActivity( 0, new Set(),last_retrived);
     }
 }
 
-// async function main(){
-//     let codechef = new Codechef("m_2002for2025");   
-//     let data = await codechef.get_credentials();
+//  async function main(){
+//     let codechef = new Codechefclass("sujal_kumar04");   
+// //     // let data = await codechef.get_credentials();
+//     let data=await codechef.fetch_from_time(moment('2024-03-05 12:00:00'));
 //     console.log(data);
 // }
 // main();
