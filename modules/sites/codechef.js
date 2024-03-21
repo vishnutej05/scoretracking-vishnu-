@@ -8,6 +8,20 @@ class Codechefclass {
         this.site = "Codechef";
         this.handle = handle;
     }
+    async is_valid_handle(){
+        let handle=this.handle;
+        try {
+            const baseURL = `https://www.codechef.com/recent/user?page=0&user_handle=${handle}&_=1710851539301`;
+            const response = await axios.get(baseURL);
+            const html = response.data;
+            const pagecount = html.max_page;
+            if(pagecount>0)return true;
+            return false;
+        } catch (err) {
+            console.log(err);
+            return false;
+        }
+    }
     async get_credentials(){
         let handle=this.handle;
         try {
@@ -132,9 +146,9 @@ class Codechefclass {
 }
 
 //  async function main(){
-//     let codechef = new Codechefclass("sujal_kumar04");   
+//     let codechef = new Codechefclass("m_2002for202");   
 // //     // let data = await codechef.get_credentials();
-//     let data=await codechef.fetch_from_time(moment('2024-03-05 12:00:00'));
+//     let data= await codechef.is_valid_handle();
 //     console.log(data);
 // }
 // main();

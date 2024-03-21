@@ -23,7 +23,7 @@ class Hackerrankclass{
             // 'Cookie': cookieValue
         }
     }    
-    async is_invalid_handle(){
+    async is_valid_handle(){
         try{
             let handle=this.handle;
             let headers=this.headers;
@@ -31,12 +31,12 @@ class Hackerrankclass{
             let response = await axios.get(url, {
                 headers: headers
             });
-            console.log(response.status);
+            // console.log(response.status);
             if(parseInt(response.status) == 200){
-                return "valid_user";
+                return true;
             }
         }catch{
-            return "invalid_ user"
+            return false;
         }
         
     }

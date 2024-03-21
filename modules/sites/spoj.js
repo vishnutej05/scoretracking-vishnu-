@@ -10,26 +10,26 @@ class Spojclass{
         this.handle = handle;
     }
      // Define your list of request failure status codes
-    async  isInvalidHandle() {
+    async  is_valid_handle() {
         let handle = this.handle;
         const REQUEST_FAILURES = [400, 401, 403, 404, 429];
         try {
             const response = await axios.get(`http://www.spoj.com/users/${handle}`, { timeout: 10000 });
             
             if (REQUEST_FAILURES.includes(response.status)) {
-            return true;
+            return false;
             }
 
             // Check if the handle exists by searching for a specific text in the response body
             if (response.data.includes("History of submissions")) {
-            return false; // Handle exists
+            return true; // Handle exists
             } else {
-            return true; // Handle does not exist
+            return false; // Handle does not exist
             }
         } catch (error) {
             // Handle request errors or timeouts
             console.error("Error checking handle:", error);
-            return true; // Consider it as an invalid handle due to error
+            return false; // Consider it as an invalid handle due to error
         }
     }
 

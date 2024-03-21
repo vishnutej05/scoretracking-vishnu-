@@ -10,6 +10,8 @@ const lcrouter = require('./router/leetcodescores');
 const hrrouter = require('./router/hackerrankscore');
 const spojrouter = require('./router/spojscores');
 const codeforcesrouter = require('./router/codeforcesscore');
+const regisrationrouter = require('./router/registration/register');
+
 // dbconnection
 databaseconnect();
 
@@ -31,6 +33,18 @@ app.use('/leetcode',lcrouter);
 app.use('/hackerrank',hrrouter);
 app.use('/spoj',spojrouter);
 app.use('/codeforces',codeforcesrouter);
+app.use('/register',regisrationrouter);
+
+
+
+app.use((err, req, res, next) => {
+    console.error(err.stack); 
+    res.status(err.status || 500).json({
+      error: {
+        message: err.message || 'Internal Server Error'
+      }
+    });
+  });
 
 const PORT = process.env.PORT || 8800;
 app.listen(PORT,()=>{

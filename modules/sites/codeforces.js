@@ -17,15 +17,15 @@ class Codeforcesclass{
     }
   };
   
-   is_invalid_handle = async () => {
+   is_valid_handle = async () => {
     let handle = this.handle;
     const apiUrl = `http://codeforces.com/api/user.status?handle=${handle}&from=1&count=2`;
     const response = await this.get_request(apiUrl);
     //console.log(response);
     if (response.status !== 'OK' || response.status=== 404) {
-      return true;
+      return false;
     }
-    return false;
+    return true;
   };
 
   async  fetchSubmissions(last_retrieved ) {
@@ -150,9 +150,10 @@ class Codeforcesclass{
 
 
 // async function main(){
-//   let obj=new Codeforces('d.2002pullstop');
+//   let obj=new Codeforcesclass('d.2002pullsto');
 //   // console.log(await obj.rating_graph_data());
-//   let data=await obj.fetchSubmissions(moment('2020-03-05 12:00:00'));
+//   // let data=await obj.fetchSubmissions(moment('2020-03-05 12:00:00'));
+//   let data=await obj.is_valid_handle();
 //   console.log(data);
 // }
 // main();
