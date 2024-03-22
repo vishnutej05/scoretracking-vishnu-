@@ -150,10 +150,10 @@ class Codeforcesclass{
 
 
 // async function main(){
-//   let obj=new Codeforcesclass('d.2002pullsto');
+//   let obj=new Codeforcesclass('d.2002pullstop');
 //   // console.log(await obj.rating_graph_data());
-//   // let data=await obj.fetchSubmissions(moment('2020-03-05 12:00:00'));
-//   let data=await obj.is_valid_handle();
+//   let data=await obj.fetchSubmissions(moment('2020-03-05 12:00:00'));
+//   // let data=await obj.is_valid_handle();
 //   console.log(data);
 // }
 // main();

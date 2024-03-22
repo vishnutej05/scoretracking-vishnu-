@@ -3,16 +3,21 @@ const Schema = mongoose.Schema;
 
 
 const ProblemsSolvedByStudentSchema = new Schema({
-    user_id: { type: Schema.Types.ObjectId, ref: 'User', required: true }, 
+    roll_no: { type: String, required: true, unique: true },
+    // user_id: { type: Schema.Types.ObjectId, ref: 'User', required: true }, 
     codechef_last_refreshed: { type: Date, default: new Date(0) },
-    codechef_solved: [{ type: Schema.Types.ObjectId, ref: 'Problem' }],
+    codechef_solved: [{ type: Schema.Types.ObjectId, ref: 'Problem',unique:true }],
     codeforces_last_refreshed: { type: Date, default: new Date(0) },
-    codeforces_solved: [{ type: Schema.Types.ObjectId, ref: 'Problem' }],
+    codeforces_solved: [{ type: Schema.Types.ObjectId, ref: 'Problem',unique:true }],
     hackerrank_last_refreshed: { type: Date, default: new Date(0) },
-    hackerrank_solved: [{ type: Schema.Types.ObjectId, ref: 'Problem' }],
+    hackerrank_solved: [{ type: Schema.Types.ObjectId, ref: 'Problem',unique:true }],
     spoj_last_refreshed: { type: Date, default: new Date(0) },
-    spoj_solved: [{ type: Schema.Types.ObjectId, ref: 'Problem' }]
+    spoj_solved: [{ type: Schema.Types.ObjectId, ref: 'Problem',unique:true }]
 });
+
+
+ProblemsSolvedByStudentSchema.index({ roll_no: 1 });
+
 
 const ProblemsSolvedByStudent = mongoose.model('ProblemsSolvedByStudent', ProblemsSolvedByStudentSchema);
 

@@ -5,6 +5,9 @@ const cors = require('cors');
 //dbconnect
 const {databaseconnect}=require("./dbconfig");
 
+//starter problem model
+const { Problems}=require("./models/all_problems");
+
 const ccrouter = require('./router/codechefscores');
 const lcrouter = require('./router/leetcodescores');
 const hrrouter = require('./router/hackerrankscore');
@@ -34,6 +37,12 @@ app.use('/hackerrank',hrrouter);
 app.use('/spoj',spojrouter);
 app.use('/codeforces',codeforcesrouter);
 app.use('/register',regisrationrouter);
+
+app.get("/update",async(req,res)=>{
+    let mainf=require("./modules/sites/scoresupdataion");
+    await mainf();
+    res.send("Updated");
+});
 
 
 

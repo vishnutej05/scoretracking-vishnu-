@@ -70,7 +70,7 @@ class Codechefclass {
             const html = response.data;
     
             const pagecount = html.max_page;
-            console.log(pagecount);
+            // console.log(pagecount);
             var htmlContent = html.content;
     
             const $ = cheerio.load(htmlContent);

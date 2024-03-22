@@ -1,13 +1,18 @@
 const mongoose=require("mongoose");
 
 const userSchema = new mongoose.Schema({
+    "roll_no": {
+      "type": "string",
+       "required": true,
+      unique:true,
+    },
     "name": {
       "type": "string",
-      "required": true
+      // "required": true
     },
     "password": {
       "type": "string",
-      "required": true
+      // "required": true
     },
     // "courses_ref": {
     //   "type": ["array", "reference"],
@@ -54,6 +59,6 @@ const userSchema = new mongoose.Schema({
   }
   );
 
-
+  userSchema.index({roll_no: 1});
 const Users=mongoose.model("User",userSchema);
 module.exports=Users;
