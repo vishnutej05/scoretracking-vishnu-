@@ -73,7 +73,8 @@ class Process_scores{
             let leetcode_handle=this.leetcode_handle;
             
             let solved_doc=await solved_model.find({roll_no:rollno});
-            let {_id,codechef_last_refreshed,codeforces_last_refreshed,hackerrank_last_refreshed,spoj_last_refreshed,
+            if(solved_doc.length==0)return "failed";
+            let { _id,codechef_last_refreshed,codeforces_last_refreshed,hackerrank_last_refreshed,spoj_last_refreshed,
                 codechef_solved,codeforces_solved,hackerrank_solved,spoj_solved}=solved_doc[0]; 
             
             
@@ -270,9 +271,8 @@ class Process_scores{
                 solved_doc_for_update.hackerrank_last_refreshed=hackerrank_last_refreshed;
                 await solved_doc_for_update.save();
             }
-
+            
             hrnewlysolved.forEach(async (element) => {
-                
                 let problem_doc=await Problems_model.find({"problem_name":element.name});
                 // console.log(problem_doc);
                 if(problem_doc.length > 0 ){
@@ -306,7 +306,9 @@ class Process_scores{
                     console.log("problem inserted",problem_doc);
                     // console.log(problem_doc);
                     solved_doc_for_update.hackerrank_solved.push((problem_doc.insertedId));
-                    let data=await solved_doc_for_update.save();
+                    let data=await solved_doc_for_update.save()
+                    
+
                     console.log("recieved:",data);
                 }
             });
@@ -324,7 +326,60 @@ class Process_scores{
 
 
     async updates_scores(){
+        try{
+            let rollno=this.rollno;
+        let codechef_handle=this.codechef_handle;
+        let codeforces_handle=this.codeforces_handle;
+        let hackerrank_handle=this.hackerrank_handle;
+        let spoj_handle=this.spoj_handle;
+        let leetcode_handle=this.leetcode_handle;
+
+        let solved_data=await solved_model.find({roll_no:rollno});
+
+        let Codechefclass=require("./codechef");
+        let codechef_obj=new Codechefclass(codechef_handle);
+        let codechef_data=await codechef_obj.get_credentials();
+        // console.log(codechef_data);
+
+        let codeforces=require("./codeforces");
+        let codeforces_obj=new codeforces(codeforces_handle);
+        let codeforces_data=await codeforces_obj.fetchProfile();
+        // console.log(codeforces_data);
+
+        let spoj=require("./spoj");
+        let spoj_obj=new spoj(spoj_handle);
+        let spoj_data=await spoj_obj.get_stats();
+        // console.log(spoj_data);
+
+        let leeetcode=await axios.get(`http://localhost:8800/leetcode/${leetcode_handle}`);
+        let leetcode_data=(leeetcode.data);
+        // console.log(leetcode_data);
+
+        let tracked_scores_data=await tracked_scores_model.find({roll_no:rollno});
+        tracked_scores_data=await tracked_scores_model.findById(tracked_scores_data[0]._id);
+
+        tracked_scores_data.lc_solved=leetcode_data.totalSolved;
+        tracked_scores_data.cc_solved=codechef_data.problemsSolved;
+        tracked_scores_data.cf_solved=codeforces_data.problems_solved;
+        tracked_scores_data.spoj_solved=parseInt(spoj_data.Problems_solved);
+        tracked_scores_data.hr_solved=solved_data[0].hackerrank_solved.length;
+        // console.log(solved_data[0].hackerrank_solved.length);
+
+        tracked_scores_data.cc_rating=codechef_data.currentRating;
+        tracked_scores_data.cf_rating=codeforces_data.rating;
+        console.log(tracked_scores_data);   
+
+        let update_response=await tracked_scores_data.save();
+        console.log(update_response);
+
+        return "score tracker updated";
+        }catch(err){
+            console.log(err);
+        }
         
+
+
+
     }
 }
 
@@ -341,7 +396,7 @@ async function mainf(){
         leetcode:"diwakar917736"
     });
     let data=await Process_obj.Process_scores_method();
-    console.log(data);  
+     console.log(data);  
 }
 
 

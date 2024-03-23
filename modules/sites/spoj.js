@@ -36,18 +36,18 @@ class Spojclass{
     
     // _________________________________________________________todo
     
-    // async get_stats(last_retrieved){
-    //     let response = await axios.get(`http://www.spoj.com/users/${this.handle}`);
-    //     response = response.data;
-    //     const dom = new JSDOM(response);
-    //     const document = dom.window.document;
-    //     return {
-    //         "user_name": document.querySelector('#user-profile-left > h3:nth-child(2)').innerHTML,
-    //         "World_Rank":document.querySelector('#user-profile-left > p:nth-child(6)').innerHTML.slice(-17),
-    //         "total_subbmissions":document.querySelector('.dl-horizontal > dd:nth-child(4)').innerHTML,
-    //         "Problems solved":document.querySelector('.dl-horizontal > dd:nth-child(2)').innerHTML,
-    //     }
-    // }
+    async get_stats(last_retrieved){
+        let response = await axios.get(`http://www.spoj.com/users/${this.handle}`);
+        response = response.data;
+        // console.log(response);
+        const dom = new JSDOM(response);
+        const document = dom.window.document;
+        return {
+            "user_name": document.querySelector('#user-profile-left > h3:nth-child(2)').innerHTML,
+            "World_Rank":document.querySelector('#user-profile-left > p:nth-child(6)').innerHTML.slice(-17),
+            "Problems_solved":document.querySelector('.dl-horizontal > dd:nth-child(2)').innerHTML,
+        }
+    }
 
 
     async get_submissions(last_retrieved){
@@ -100,9 +100,10 @@ class Spojclass{
 
 
 // async function main(){
-//     const spoj = new Spoj("bhargavdh5");
-//     const submissions = await spoj.get_submissions(moment('2023-02-17 08:50:08'));
-//     console.log(submissions);
+//     const spoj = new Spojclass("bhargavdh5");
+//     // const submissions = await spoj.get_submissions(moment('2023-02-17 08:50:08'));
+//     const data = await spoj.get_stats();
+//     console.log(data);
 //     // console.log(await spoj.get_stats());
 // }
 // main();

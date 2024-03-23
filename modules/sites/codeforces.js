@@ -83,8 +83,8 @@ class Codeforcesclass{
       stage:document.querySelector('.user-rank > span:nth-child(1)').innerHTML,
       rating:document.querySelector('.info > ul:nth-child(2) > li:nth-child(1) > span:nth-child(2)').innerHTML,
       max_rating:document.querySelector('span.smaller > span:nth-child(2)').innerHTML,  
+      problems_solved:document.querySelector("html body div#body div div#pageContent.content-with-sidebar div._UserActivityFrame_frame div.roundbox.userActivityRoundBox.borderTopRound.borderBottomRound div._UserActivityFrame_footer div._UserActivityFrame_countersRow div._UserActivityFrame_counter div._UserActivityFrame_counterValue").innerHTML.split(" ")[0]
     }
-
   }
 
   rating_graph_data = async () => {
@@ -152,8 +152,9 @@ class Codeforcesclass{
 // async function main(){
 //   let obj=new Codeforcesclass('d.2002pullstop');
 //   // console.log(await obj.rating_graph_data());
-//   let data=await obj.fetchSubmissions(moment('2020-03-05 12:00:00'));
+//   // let data=await obj.fetchSubmissions(moment('2020-03-05 12:00:00'));
 //   // let data=await obj.is_valid_handle();
+//   let data=await obj.fetchProfile();
 //   console.log(data);
 // }
 // main();
