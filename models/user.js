@@ -1,21 +1,26 @@
 const mongoose=require("mongoose");
 
 const userSchema = new mongoose.Schema({
+    "roll_no": {
+      "type": "string",
+       "required": true,
+      unique:true,
+    },
     "name": {
       "type": "string",
-      "required": true
+      // "required": true
     },
     "password": {
       "type": "string",
-      "required": true
+      // "required": true
     },
-    "courses_ref": {
-      "type": ["array", "reference"],
-      "items": {
-        "type": "ObjectId",
-        "ref": "Course"
-      }
-    },
+    // "courses_ref": {
+    //   "type": ["array", "reference"],
+    //   "items": {
+    //     "type": "ObjectId",
+    //     "ref": "Course"
+    //   }
+    // },
     "codechef_handle": {
       "type": "string",
       "required": true
@@ -48,12 +53,12 @@ const userSchema = new mongoose.Schema({
     },
     "problems_solved": {
         "type": "ObjectId",
-        "ref": "solved_Problem_db",
+        "ref": "ProblemsSolvedByStudent",
         "required": true
     }
   }
   );
 
-
+  userSchema.index({roll_no: 1});
 const Users=mongoose.model("User",userSchema);
 module.exports=Users;

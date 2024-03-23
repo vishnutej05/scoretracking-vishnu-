@@ -10,48 +10,50 @@ class Spojclass{
         this.handle = handle;
     }
      // Define your list of request failure status codes
-    async  isInvalidHandle() {
+    async  is_valid_handle() {
         let handle = this.handle;
         const REQUEST_FAILURES = [400, 401, 403, 404, 429];
         try {
             const response = await axios.get(`http://www.spoj.com/users/${handle}`, { timeout: 10000 });
             
             if (REQUEST_FAILURES.includes(response.status)) {
-            return true;
+            return false;
             }
 
             // Check if the handle exists by searching for a specific text in the response body
             if (response.data.includes("History of submissions")) {
-            return false; // Handle exists
+            return true; // Handle exists
             } else {
-            return true; // Handle does not exist
+            return false; // Handle does not exist
             }
         } catch (error) {
             // Handle request errors or timeouts
             console.error("Error checking handle:", error);
-            return true; // Consider it as an invalid handle due to error
+            return false; // Consider it as an invalid handle due to error
         }
     }
 
     
     // _________________________________________________________todo
     
-    // async get_stats(last_retrieved){
-    //     let response = await axios.get(`http://www.spoj.com/users/${this.handle}`);
-    //     response = response.data;
-    //     const dom = new JSDOM(response);
-    //     const document = dom.window.document;
-    //     return {
-    //         "user_name": document.querySelector('#user-profile-left > h3:nth-child(2)').innerHTML,
-    //         "World_Rank":document.querySelector('#user-profile-left > p:nth-child(6)').innerHTML.slice(-17),
-    //         "total_subbmissions":document.querySelector('.dl-horizontal > dd:nth-child(4)').innerHTML,
-    //         "Problems solved":document.querySelector('.dl-horizontal > dd:nth-child(2)').innerHTML,
-    //     }
-    // }
+    async get_stats(last_retrieved){
+        let response = await axios.get(`http://www.spoj.com/users/${this.handle}`);
+        response = response.data;
+        // console.log(response);
+        const dom = new JSDOM(response);
+        const document = dom.window.document;
+        return {
+            "user_name": document.querySelector('#user-profile-left > h3:nth-child(2)').innerHTML,
+            "World_Rank":document.querySelector('#user-profile-left > p:nth-child(6)').innerHTML.slice(-17),
+            "Problems_solved":document.querySelector('.dl-horizontal > dd:nth-child(2)').innerHTML,
+        }
+    }
 
 
     async get_submissions(last_retrieved){
+        console.log("get subbmission method")
         last_retrieved = moment(last_retrieved).utcOffset('+05:30').format('YYYY-MM-DD HH:mm:ss');
+        let last_page_retrieved = moment().utcOffset('+05:30').format('YYYY-MM-DD HH:mm:ss');
         let handle = this.handle;
         const baseUrl = `https://www.spoj.com/status/${handle}/all/start=`;
         const results = [];
@@ -59,13 +61,23 @@ class Spojclass{
         let start = 0;
 
         while (true) {
+        console.log("Fetching page", start / 20 + 1);
         const nextPageUrl = baseUrl + start;
         const response = await axios.get(nextPageUrl);
         const html = await response.data
 
         const dom = new JSDOM(html);
         const doc = dom.window.document;
+        if(! doc.querySelectorAll(".kol1")[0])return results;
+        let first_one=moment(doc.querySelectorAll(".kol1")[0].querySelector(".status_sm span")?.getAttribute("title")).utcOffset('+05:30').format('YYYY-MM-DD HH:mm:ss')
+        console.log("firstone=",first_one,"lastone=",last_page_retrieved);
+        if(last_page_retrieved == first_one){
+            return results;
+        }else{
+            last_page_retrieved=first_one
+        }
 
+        
         const problemRows = Array.from(doc.querySelectorAll(".kol1")).map((element) => {
             const timestamp = element.querySelector(".status_sm span")?.getAttribute("title");
             const problemLink = element.querySelector(".sproblem a");
@@ -79,6 +91,7 @@ class Spojclass{
             };
         });
 
+        // console.log(results.length);
         if (problemRows.length === 0) {
             return results;
             break;
@@ -100,9 +113,10 @@ class Spojclass{
 
 
 // async function main(){
-//     const spoj = new Spoj("bhargavdh5");
-//     const submissions = await spoj.get_submissions(moment('2023-02-17 08:50:08'));
-//     console.log(submissions);
+//     const spoj = new Spojclass("abhi033");
+//      const data = await spoj.get_submissions(moment('2001-02-1 08:50:08'));
+//     // const data = await spoj.get_stats();
+//     console.log(data);
 //     // console.log(await spoj.get_stats());
 // }
 // main();

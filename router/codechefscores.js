@@ -1,10 +1,12 @@
 const router = require('express').Router();
-const {
-    codechefstats,
-    cc_checkcontroller
-}=require('../controllers/cccontroller');
+let Codechefclass=require('../modules/sites/codechef');
+const {codechefstats,recent_submissions}=require('../controllers/cccontroller');
+
 
 router.get('/:handle', codechefstats);
-router.get('/', cc_checkcontroller);
+router.get('/recent/:handle', recent_submissions);
+router.get('/', (req,res)=>{
+    res.send("data from code chef");
+});
 
 module.exports = router;    
