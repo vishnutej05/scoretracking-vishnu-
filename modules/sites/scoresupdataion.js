@@ -93,46 +93,42 @@ class Process_scores{
             // //checking problems are alresy availble or not and performing operations
                 
                 
-            cfnewlysolved.forEach(async (element) => {
-                
-                let problem_doc=await Problems_model.find({"problem_name":element.name});
-                // console.log(problem_doc);
-                if(problem_doc.length > 0 ){
-                    let solved_doc_for_update= await solved_model.findById(_id);
-                    //alredy have problem in db
-                    // console.log(problem_doc[0]);
-                    // console.log("user_id",_id)
-                    // console.log("problem id",problem_doc[0]._id);
-                    let already_reference_present=solved_doc_for_update.codeforces_solved.find((ele)=>{ return ele.equals(problem_doc[0]._id); });
-                    if(! already_reference_present){
-                        console.log("the refernece not present now pushing it to solved");
-                        solved_doc_for_update.codeforces_solved.push((problem_doc[0]._id));
-                        let data=await solved_doc_for_update.save();
-                        // console.log("recieved:",data);
-                    }
-                    else {
-                        console.log("newly solved already present");
-                    }
-
-                    
-                }else {
-                    let solved_doc_for_update= await solved_model.findById(_id);
-                    console.log("creating new problem and updating...");
-                    let problem_data={
-                        problem_name:element.name,
-                        problem_href:element.link,
-                        site_name:"CodeForces"
-                    };
-                    console.log(element.name+" not already exists in db");
-                    let problem_doc=await Problems_model.collection.insertOne(problem_data);
-                    console.log("problem inserted",problem_doc);
-                    // console.log(problem_doc);
-                    solved_doc_for_update.codeforces_solved.push((problem_doc.insertedId));
-                    let data=await solved_doc_for_update.save();
-                    console.log("recieved:",data);
-                }
-            });
+            for (const element of cfnewlysolved) {
+                let problem_doc = await Problems_model.findOne({ problem_name: element.name });
             
+                if (problem_doc) {
+                    let solved_doc_for_update = await solved_model.findById(_id);
+                    let problemId = problem_doc._id;
+            
+                    // Check if the problemId is not already in the array
+                    if (!solved_doc_for_update.codeforces_solved.includes(problemId)) {
+                        solved_doc_for_update.codeforces_solved.push(problemId); // Add to array
+                        await solved_doc_for_update.save();
+                        console.log("Problem added to codeforces_solved array.");
+                    } else {
+                        console.log("Problem already exists in codeforces_solved array.");
+                    }
+                } else {
+                    // Create a new problem and update solved_doc_for_update
+                    let solved_doc_for_update = await solved_model.findById(_id);
+                    let problem_data = {
+                        problem_name: element.name,
+                        problem_href: element.link,
+                        site_name: "CodeForces"
+                    };
+                    let newProblem = await Problems_model.create(problem_data);
+                    let problemId = newProblem._id;
+            
+                    // Check if the problemId is not already in the array
+                    if (!solved_doc_for_update.codeforces_solved.includes(problemId)) {
+                        solved_doc_for_update.codeforces_solved.push(problemId); // Add to array
+                        await solved_doc_for_update.save();
+                        console.log("New problem created and added to codeforces_solved array.");
+                    } else {
+                        console.log("New problem already exists in codeforces_solved array.");
+                    }
+                }
+            }
 
             // ______________________________________________________________________________________________________________
 
@@ -148,44 +144,42 @@ class Process_scores{
             }
              console.log("codechef_last_refreshed",codechef_last_refreshed);
 
-            ccnewlysolved.forEach(async (element) => {
-                let problem_doc=await Problems_model.find({"problem_name":element.problem});
-                // console.log(problem_doc);
-                if(problem_doc.length > 0 ){
-                    let solved_doc_for_update= await solved_model.findById(_id);
-                    //alredy have problem in db
-                    // console.log(problem_doc[0]);
-                    // console.log("user_id",_id)
-                    // console.log("problem id",problem_doc[0]._id);
-                    let already_reference_present=solved_doc_for_update.codechef_solved.find((ele)=>{ return ele.equals(problem_doc[0]._id); });
-                    if(! already_reference_present){
-                        console.log("the refernece not present now pushing it to solved");
-                        solved_doc_for_update.codechef_solved.push((problem_doc[0]._id));
-                        let data=await solved_doc_for_update.save();
-                        // console.log("recieved:",data);
+             for (const element of ccnewlysolved) {
+                let problem_doc = await Problems_model.findOne({ problem_name: element.problem });
+            
+                if (problem_doc) {
+                    let solved_doc_for_update = await solved_model.findById(_id);
+                    let problemId = problem_doc._id;
+            
+                    // Check if the problemId is not already in the array
+                    if (!solved_doc_for_update.codechef_solved.includes(problemId)) {
+                        solved_doc_for_update.codechef_solved.push(problemId); // Add to array
+                        await solved_doc_for_update.save();
+                        console.log("Problem added to codechef_solved array.");
+                    } else {
+                        console.log("Problem already exists in codechef_solved array.");
                     }
-                    else {
-                        console.log("newly solved already present");
-                    }
-
-                    
-                }else {
-                    let solved_doc_for_update= await solved_model.findById(_id);
-                    console.log("creating new problem and updating...");
-                    let problem_data={
-                        problem_name:element.problem,
-                        problem_href:element.problemLink,
-                        site_name:"CodeChef"
+                } else {
+                    // Create a new problem and update solved_doc_for_update
+                    let solved_doc_for_update = await solved_model.findById(_id);
+                    let problem_data = {
+                        problem_name: element.problem,
+                        problem_href: element.problemLink,
+                        site_name: "CodeChef"
                     };
-                    console.log(element.problem+" not already exists in db");
-                    let problem_doc=await Problems_model.collection.insertOne(problem_data);
-                    console.log("problem inserted",problem_doc);
-                    // console.log(problem_doc);
-                    solved_doc_for_update.codechef_solved.push((problem_doc.insertedId));
-                    let data=await solved_doc_for_update.save();
-                    console.log("recieved:",data);
+                    let newProblem = await Problems_model.create(problem_data);
+                    let problemId = newProblem._id;
+            
+                    // Check if the problemId is not already in the array
+                    if (!solved_doc_for_update.codechef_solved.includes(problemId)) {
+                        solved_doc_for_update.codechef_solved.push(problemId); // Add to array
+                        await solved_doc_for_update.save();
+                        console.log("New problem created and added to codechef_solved array.");
+                    } else {
+                        console.log("New problem already exists in codechef_solved array.");
+                    }
                 }
-            });
+            }
 
 
 
@@ -208,45 +202,42 @@ class Process_scores{
             } 
 
 
-            spnewlysolved.forEach(async (element) => {
-                
-                let problem_doc=await Problems_model.find({"problem_name":element.name});
-                // console.log(problem_doc);
-                if(problem_doc.length > 0 ){
-                    let solved_doc_for_update= await solved_model.findById(_id);
-                    //alredy have problem in db
-                    // console.log(problem_doc[0]);
-                    // console.log("user_id",_id)
-                    // console.log("problem id",problem_doc[0]._id);
-                    let already_reference_present=solved_doc_for_update.spoj_solved.find((ele)=>{ return ele.equals(problem_doc[0]._id); });
-                    if(! already_reference_present){
-                        console.log("the refernece not present now pushing it to solved");
-                        solved_doc_for_update.spoj_solved.push((problem_doc[0]._id));
-                        let data=await solved_doc_for_update.save();
-                        // console.log("recieved:",data);
+            for (const element of spnewlysolved) {
+                let problem_doc = await Problems_model.findOne({ problem_name: element.name });
+            
+                if (problem_doc) {
+                    let solved_doc_for_update = await solved_model.findById(_id);
+                    let problemId = problem_doc._id;
+            
+                    // Check if the problemId is not already in the array
+                    if (!solved_doc_for_update.spoj_solved.includes(problemId)) {
+                        solved_doc_for_update.spoj_solved.push(problemId); // Add to array
+                        await solved_doc_for_update.save();
+                        console.log("Problem added to spoj_solved array.");
+                    } else {
+                        console.log("Problem already exists in spoj_solved array.");
                     }
-                    else {
-                        console.log("newly solved already present");
-                    }
-
-                    
-                }else {
-                    let solved_doc_for_update= await solved_model.findById(_id);
-                    console.log("creating new problem and updating...");
-                    let problem_data={
-                        problem_name:element.name,
-                        problem_href:element.link,
-                        site_name:"Spoj"
+                } else {
+                    // Create a new problem and update solved_doc_for_update
+                    let solved_doc_for_update = await solved_model.findById(_id);
+                    let problem_data = {
+                        problem_name: element.name,
+                        problem_href: element.link,
+                        site_name: "Spoj"
                     };
-                    console.log(element.name+" not already exists in db");
-                    let problem_doc=await Problems_model.collection.insertOne(problem_data);
-                    console.log("problem inserted",problem_doc);
-                    // console.log(problem_doc);
-                    solved_doc_for_update.spoj_solved.push((problem_doc.insertedId));
-                    let data=await solved_doc_for_update.save();
-                    console.log("recieved:",data);
+                    let newProblem = await Problems_model.create(problem_data);
+                    let problemId = newProblem._id;
+            
+                    // Check if the problemId is not already in the array
+                    if (!solved_doc_for_update.spoj_solved.includes(problemId)) {
+                        solved_doc_for_update.spoj_solved.push(problemId); // Add to array
+                        await solved_doc_for_update.save();
+                        console.log("New problem created and added to spoj_solved array.");
+                    } else {
+                        console.log("New problem already exists in spoj_solved array.");
+                    }
                 }
-            });
+            }
 
 
 
@@ -272,46 +263,42 @@ class Process_scores{
                 await solved_doc_for_update.save();
             }
             
-            hrnewlysolved.forEach(async (element) => {
-                let problem_doc=await Problems_model.find({"problem_name":element.name});
-                // console.log(problem_doc);
-                if(problem_doc.length > 0 ){
-                    let solved_doc_for_update= await solved_model.findById(_id);
-                    //alredy have problem in db
-                    // console.log(problem_doc[0]);
-                    // console.log("user_id",_id)
-                    // console.log("problem id",problem_doc[0]._id);
-                    let already_reference_present=solved_doc_for_update.hackerrank_solved.find((ele)=>{ return ele.equals(problem_doc[0]._id); });
-                    if(! already_reference_present){
-                        console.log("the refernece not present now pushing it to solved");
-                        solved_doc_for_update.hackerrank_solved.push((problem_doc[0]._id));
-                        let data=await solved_doc_for_update.save();
-                        // console.log("recieved:",data);
+            for (const element of hrnewlysolved) {
+                let problem_doc = await Problems_model.findOne({ problem_name: element.name });
+            
+                if (problem_doc) {
+                    let solved_doc_for_update = await solved_model.findById(_id);
+                    let problemId = problem_doc._id;
+            
+                    // Check if the problemId is not already in the array
+                    if (!solved_doc_for_update.hackerrank_solved.includes(problemId)) {
+                        solved_doc_for_update.hackerrank_solved.push(problemId); // Add to array
+                        let data = await solved_doc_for_update.save();
+                        console.log("Problem added to hackerrank_solved array.");
+                    } else {
+                        console.log("Problem already exists in hackerrank_solved array.");
                     }
-                    else {
-                        console.log("newly solved already present");
-                    }
-
-                    
-                }else {
-                    let solved_doc_for_update= await solved_model.findById(_id);
-                    console.log("creating new problem and updating...");
-                    let problem_data={
-                        problem_name:element.name,
-                        problem_href:element.url,
-                        site_name:"HackerRank"
+                } else {
+                    // Create a new problem and update solved_doc_for_update
+                    let solved_doc_for_update = await solved_model.findById(_id);
+                    let problem_data = {
+                        problem_name: element.name,
+                        problem_href: element.url,
+                        site_name: "HackerRank"
                     };
-                    console.log(element.name+" not already exists in db");
-                    let problem_doc=await Problems_model.collection.insertOne(problem_data);
-                    console.log("problem inserted",problem_doc);
-                    // console.log(problem_doc);
-                    solved_doc_for_update.hackerrank_solved.push((problem_doc.insertedId));
-                    let data=await solved_doc_for_update.save()
-                    
-
-                    console.log("recieved:",data);
+                    let newProblem = await Problems_model.create(problem_data);
+                    let problemId = newProblem._id;
+            
+                    // Check if the problemId is not already in the array
+                    if (!solved_doc_for_update.hackerrank_solved.includes(problemId)) {
+                        solved_doc_for_update.hackerrank_solved.push(problemId); // Add to array
+                        let data = await solved_doc_for_update.save();
+                        console.log("New problem created and added to hackerrank_solved array.");
+                    } else {
+                        console.log("New problem already exists in hackerrank_solved array.");
+                    }
                 }
-            });
+            }
 
 
         console.log("hackerrank_last_refreshed",hackerrank_last_refreshed); 
