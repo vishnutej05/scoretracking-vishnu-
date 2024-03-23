@@ -31,11 +31,19 @@ class Codechefclass {
             
             // get all the links in the problems solved section
             const linksArray = [];
-            const linkarr = document.querySelector('section.rating-data-section:nth-child(7)').querySelectorAll('a')
+            const sett=new Set();
+            const linkarr = document.querySelector('section.rating-data-section:nth-child(7)').querySelectorAll('p a')
             linkarr.forEach(link => {
             const href = link.getAttribute('href');
             const content = link.childNodes[0].data;
-            linksArray.push({ href, content });
+            // console.log(href);
+            let check=href.split('/');
+            check=check[check.length-1];
+            // console.log(check);
+            if(!sett.has(check)){
+                sett.add(check);
+                linksArray.push({ href, content });
+            }
             });
     
             // response data 
@@ -50,7 +58,7 @@ class Codechefclass {
                 globalRank: parseInt(document.querySelector('.rating-ranks').children[0].children[0].children[0].children[0].innerHTML),
                 countryRank: parseInt(document.querySelector('.rating-ranks').children[0].children[1].children[0].children[0].innerHTML),
                 stars: document.querySelector('.rating').textContent || "unrated",
-                problemsSolved: linkarr.length,
+                problemsSolved: linksArray.length,
             });
         } catch (err) {
             return({ success: false, error: err });
@@ -146,9 +154,9 @@ class Codechefclass {
 }
 
 //  async function main(){
-//     let codechef = new Codechefclass("m_2002for202");   
+//     let codechef = new Codechefclass("m_2002for2025");   
 // //     // let data = await codechef.get_credentials();
-//     let data= await codechef.is_valid_handle();
+//     let data= await codechef.get_credentials();
 //     console.log(data);
 // }
 // main();

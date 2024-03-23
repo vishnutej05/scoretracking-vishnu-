@@ -12,7 +12,7 @@ const User=require("../../models/user");
 
 function is_profile_available(req,res,next){
     let body=req.body;
-    if(body.rollno && body.codechef && body.codeforces && body.hackerrank && body.leetcode && body.spoj){
+    if(body.name && body.rollno && body.codechef && body.codeforces && body.hackerrank && body.leetcode && body.spoj){
         // console.log(body);
         next();
     }
@@ -68,6 +68,7 @@ router.post('/',is_profile_available,is_valid_profile,async (req,res)=>{
         });
 
         let leaderboard_doc=await leaderboard_model.collection.insertOne({
+            user_name:body.name,
             roll_no:body.rollno,
             lc_leaderboard_score:0,
             cf_leaderboard_score:0,

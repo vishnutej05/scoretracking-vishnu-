@@ -88,21 +88,27 @@ class Process_scores{
                 solved_doc_for_update.codeforces_last_refreshed=codeforces_last_refreshed;
                 await solved_doc_for_update.save();
             }
-            // // console.log("codeforces_last_refreshed",codeforces_last_refreshed);
+            // console.log("codeforces_last_refreshed",codeforces_last_refreshed);
 
             // //checking problems are alresy availble or not and performing operations
                 
                 
             for (const element of cfnewlysolved) {
+                console.log("element-name",element.name);
                 let problem_doc = await Problems_model.findOne({ problem_name: element.name });
             
                 if (problem_doc) {
+                    console.log("inside available in cf db");
                     let solved_doc_for_update = await solved_model.findById(_id);
                     let problemId = problem_doc._id;
-            
+                    console.log("problemId",problemId);
                     // Check if the problemId is not already in the array
-                    if (!solved_doc_for_update.codeforces_solved.includes(problemId)) {
+                    console.log(solved_doc_for_update.codeforces_solved);
+                    if (! solved_doc_for_update.codeforces_solved.includes(problemId)) {
+                        console.log("problemIdnot available in codeforces_solved array");
+
                         solved_doc_for_update.codeforces_solved.push(problemId); // Add to array
+
                         await solved_doc_for_update.save();
                         console.log("Problem added to codeforces_solved array.");
                     } else {
@@ -110,6 +116,7 @@ class Process_scores{
                     }
                 } else {
                     // Create a new problem and update solved_doc_for_update
+                    console.log("inside not available in cf db");
                     let solved_doc_for_update = await solved_model.findById(_id);
                     let problem_data = {
                         problem_name: element.name,
@@ -120,13 +127,11 @@ class Process_scores{
                     let problemId = newProblem._id;
             
                     // Check if the problemId is not already in the array
-                    if (!solved_doc_for_update.codeforces_solved.includes(problemId)) {
+                    
                         solved_doc_for_update.codeforces_solved.push(problemId); // Add to array
                         await solved_doc_for_update.save();
                         console.log("New problem created and added to codeforces_solved array.");
-                    } else {
-                        console.log("New problem already exists in codeforces_solved array.");
-                    }
+                    
                 }
             }
 
@@ -311,10 +316,34 @@ class Process_scores{
         }
     }
 
+    async leaderboard_update(data){
+        let rollno=this.rollno;
+        let codechef_handle=this.codechef_handle;
+        let codeforces_handle=this.codeforces_handle;
+        let hackerrank_handle=this.hackerrank_handle;
+        let spoj_handle=this.spoj_handle;
+        let leetcode_handle=this.leetcode_handle;
+        console.log(data);
+        let leaderboard_model_doc=await leaderboard_model.findOne({roll_no:rollno});
+        leaderboard_model_doc.lc_leaderboard_score=data.lc_leaderboard_score
+        leaderboard_model_doc.cf_leaderboard_score=data.cf_leaderboard_score
+        leaderboard_model_doc.cc_leaderboard_score=data.cc_leaderboard_score
+        leaderboard_model_doc.hr_leaderboard_score=data.hr_leaderboard_score
+        leaderboard_model_doc.spoj_leaderboard_score=data.spoj_leaderboard_score;
+        leaderboard_model_doc.total_leaderboard_score=
+        leaderboard_model_doc.lc_leaderboard_score+
+        leaderboard_model_doc.cf_leaderboard_score+
+        leaderboard_model_doc.cc_leaderboard_score+
+        leaderboard_model_doc.hr_leaderboard_score+
+        leaderboard_model_doc.spoj_leaderboard_score
 
+        let leaderscore=await leaderboard_model_doc.save();
+        console.log("leaderscore",leaderscore);
+        
+    }
     async updates_scores(){
         try{
-            let rollno=this.rollno;
+        let rollno=this.rollno;
         let codechef_handle=this.codechef_handle;
         let codeforces_handle=this.codeforces_handle;
         let hackerrank_handle=this.hackerrank_handle;
@@ -346,7 +375,7 @@ class Process_scores{
         tracked_scores_data=await tracked_scores_model.findById(tracked_scores_data[0]._id);
 
         tracked_scores_data.lc_solved=leetcode_data.totalSolved;
-        tracked_scores_data.cc_solved=codechef_data.problemsSolved;
+        tracked_scores_data.cc_solved=solved_data[0].codechef_solved.length;
         tracked_scores_data.cf_solved=codeforces_data.problems_solved;
         tracked_scores_data.spoj_solved=parseInt(spoj_data.Problems_solved);
         tracked_scores_data.hr_solved=solved_data[0].hackerrank_solved.length;
@@ -354,16 +383,20 @@ class Process_scores{
 
         tracked_scores_data.cc_rating=codechef_data.currentRating;
         tracked_scores_data.cf_rating=codeforces_data.rating;
-        console.log(tracked_scores_data);   
+        // console.log(tracked_scores_data);   
 
-        let update_response=await tracked_scores_data.save();
-        console.log(update_response);
+        let update_response_total=await tracked_scores_data.save();
+        update_response_total=await tracked_scores_model.findById(update_response_total._id);
 
+        update_response_total.total_leaderboard_score=update_response_total.lc_leaderboard_score+update_response_total.cc_leaderboard_score+update_response_total.cf_leaderboard_score+update_response_total.spoj_leaderboard_score+update_response_total.hr_leaderboard_score;
+        // console.log(update_response_total);
+        await update_response_total.save();
+        // console.log(update_response_total);
+        this.leaderboard_update(update_response_total);
         return "score tracker updated";
         }catch(err){
             console.log(err);
-        }
-        
+        } 
 
 
 
@@ -372,16 +405,10 @@ class Process_scores{
 
 
 
-async function mainf(){
+async function mainf(datas){
     console.log("Inside mainf");
-    let Process_obj=new Process_scores({
-        rollno:"21r21a3333",
-        codechef:"m_2002for2025",
-        codeforces:"d.2002pullstop",
-        hackerrank:"21r21a3333",
-        spoj:"bhargavdh5",
-        leetcode:"diwakar917736"
-    });
+    console.log(datas);
+    let Process_obj=new Process_scores(datas);
     let data=await Process_obj.Process_scores_method();
      console.log(data);  
 }

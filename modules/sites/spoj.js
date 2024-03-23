@@ -51,7 +51,9 @@ class Spojclass{
 
 
     async get_submissions(last_retrieved){
+        console.log("get subbmission method")
         last_retrieved = moment(last_retrieved).utcOffset('+05:30').format('YYYY-MM-DD HH:mm:ss');
+        let last_page_retrieved = moment().utcOffset('+05:30').format('YYYY-MM-DD HH:mm:ss');
         let handle = this.handle;
         const baseUrl = `https://www.spoj.com/status/${handle}/all/start=`;
         const results = [];
@@ -59,13 +61,23 @@ class Spojclass{
         let start = 0;
 
         while (true) {
+        console.log("Fetching page", start / 20 + 1);
         const nextPageUrl = baseUrl + start;
         const response = await axios.get(nextPageUrl);
         const html = await response.data
 
         const dom = new JSDOM(html);
         const doc = dom.window.document;
+        if(! doc.querySelectorAll(".kol1")[0])return results;
+        let first_one=moment(doc.querySelectorAll(".kol1")[0].querySelector(".status_sm span")?.getAttribute("title")).utcOffset('+05:30').format('YYYY-MM-DD HH:mm:ss')
+        console.log("firstone=",first_one,"lastone=",last_page_retrieved);
+        if(last_page_retrieved == first_one){
+            return results;
+        }else{
+            last_page_retrieved=first_one
+        }
 
+        
         const problemRows = Array.from(doc.querySelectorAll(".kol1")).map((element) => {
             const timestamp = element.querySelector(".status_sm span")?.getAttribute("title");
             const problemLink = element.querySelector(".sproblem a");
@@ -79,6 +91,7 @@ class Spojclass{
             };
         });
 
+        // console.log(results.length);
         if (problemRows.length === 0) {
             return results;
             break;
@@ -100,9 +113,9 @@ class Spojclass{
 
 
 // async function main(){
-//     const spoj = new Spojclass("bhargavdh5");
-//     // const submissions = await spoj.get_submissions(moment('2023-02-17 08:50:08'));
-//     const data = await spoj.get_stats();
+//     const spoj = new Spojclass("abhi033");
+//      const data = await spoj.get_submissions(moment('2001-02-1 08:50:08'));
+//     // const data = await spoj.get_stats();
 //     console.log(data);
 //     // console.log(await spoj.get_stats());
 // }
