@@ -105,10 +105,11 @@ router.post("/", is_profile_available, is_valid_profile, async (req, res) => {
     console.log(solved_doc);
     console.log(tracked_scores_doc);
     console.log(leaderboard_doc);
-    res.send(body);
+    res.send("User Created");
   } catch (err) {
     console.log(err);
     res.status(500).json(err.message);
   }
 });
+
 module.exports = router;

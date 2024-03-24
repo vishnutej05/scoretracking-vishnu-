@@ -18,7 +18,7 @@ router.post("/", async (req, res) => {
     let user = await User.findOne({ roll_no });
 
     if (!user) {
-      throw new Error("User already exists"); //if user is not preset already
+      throw new Error("User Doesn't exists"); //if user is not preset already
     }
 
     const decryptedPassword = CryptoJS.AES.decrypt(

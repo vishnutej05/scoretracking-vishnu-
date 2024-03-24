@@ -17,7 +17,7 @@ const leaderboardsortedrouter = require("./router/leaderboardroutes/sortedboard"
 const regisrationrouter = require("./router/registration/register");
 const authenticaterouter = require("./router/registration/authenticate");
 const sendotprouter = require("./router/registration/send_otp");
-const getcredentialsrouter = require("./router/registration/getcreds");
+const getcredentialsrouter = require("./router/registration/get_creds");
 
 // models
 const Users = require("./models/user");
@@ -46,11 +46,11 @@ app.use("/leetcode", lcrouter);
 app.use("/hackerrank", hrrouter);
 app.use("/spoj", spojrouter);
 app.use("/codeforces", codeforcesrouter);
-app.use("/register", regisrationrouter);
 app.use("/leaderboard", leaderboardsortedrouter);
+app.use("/register", regisrationrouter);
 app.use("/authenticate", authenticaterouter);
 app.use("/sendotp", sendotprouter);
-app.use("./getcreds", getcredentialsrouter);
+app.use("/getcreds", getcredentialsrouter);
 
 app.get("/updateall", async (req, res) => {
   let mainf = require("./modules/sites/scoresupdataion");

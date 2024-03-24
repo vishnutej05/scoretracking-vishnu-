@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-
+const CryptoJS = require("crypto-js");
 // models
 const User = require("../../models/user");
 
@@ -21,7 +21,7 @@ router.post("/", async (req, res) => {
 
     const decryptedPassword = CryptoJS.AES.decrypt(
       user.password,
-      secretKey
+      process.env.secretKey
     ).toString(CryptoJS.enc.Utf8);
 
     res.send({
