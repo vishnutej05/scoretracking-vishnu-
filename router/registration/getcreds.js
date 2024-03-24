@@ -1,0 +1,37 @@
+const express = require("express");
+const router = express.Router();
+
+// models
+const User = require("../../models/user");
+
+router.get("/", async (req, res) => {
+  res.send("Forgot Credentials Page");
+});
+
+router.post("/", async (req, res) => {
+  try {
+    const { email } = req.body;
+    console.log(email);
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).send("User Not Found");
+    }
+
+    const decryptedPassword = CryptoJS.AES.decrypt(
+      user.password,
+      secretKey
+    ).toString(CryptoJS.enc.Utf8);
+
+    res.send({
+      username: user.username,
+      password: decryptedPassword,
+    });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+module.exports = router;
