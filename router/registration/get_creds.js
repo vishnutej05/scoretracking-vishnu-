@@ -25,7 +25,7 @@ router.post("/", async (req, res) => {
     ).toString(CryptoJS.enc.Utf8);
 
     res.send({
-      username: user.username,
+      rollno: user.roll_no,
       password: decryptedPassword,
     });
   } catch (error) {

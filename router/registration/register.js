@@ -3,13 +3,16 @@ const router = express.Router();
 const CryptoJS = require("crypto-js");
 const is_valid_profile = require("../../middlewares/is_valid_profile");
 require("dotenv").config();
-const jwt = require("jsonwebtoken");
+// const jwt = require("jsonwebtoken");
 
 // models
 const solved_model = require("../../models/solved_problems");
 const tracked_scores_model = require("../../models/tracked_scores");
 const leaderboard_model = require("../../models/leaderboard");
 const User = require("../../models/user");
+const dashboard_model = require("../../models/dashboard");
+
+const { Error } = require("mongoose");
 
 function is_profile_available(req, res, next) {
   let body = req.body;
@@ -40,7 +43,6 @@ router.post("/", is_profile_available, is_valid_profile, async (req, res) => {
     let solved_user = await solved_model.findOne({ roll_no });
     if (solved_user) {
       throw new Error("User already exists");
-      return;
     }
 
     const EncryptedPass = CryptoJS.AES.encrypt(
@@ -77,7 +79,7 @@ router.post("/", is_profile_available, is_valid_profile, async (req, res) => {
       total_leaderboard_score: 0,
     });
     let leaderboard_doc = await leaderboard_model.collection.insertOne({
-      user_name: body.name,
+      user_name: body.username,
       roll_no: body.rollno,
       lc_leaderboard_score: 0,
       cf_leaderboard_score: 0,
@@ -91,6 +93,7 @@ router.post("/", is_profile_available, is_valid_profile, async (req, res) => {
       name: body.name,
       password: EncryptedPass,
       email: body.email,
+      username: body.username,
       codechef_handle: body.codechef,
       leetcode_handle: body.leetcode,
       codeforces_handle: body.codeforces,
@@ -100,11 +103,31 @@ router.post("/", is_profile_available, is_valid_profile, async (req, res) => {
       credential_ref: tracked_scores_doc.insertedId,
       problems_solved: solved_doc.insertedId,
     });
-
+    console.log(body.phone_number);
+    let dashboard_doc = await dashboard_model.collection.insertOne({
+      roll_no: body.rollno,
+      user_name: body.username || "",
+      email: body.email || "",
+      phone_number: body.phone_number || "",
+      dob: body.dob || "",
+      gender: body.gender || "",
+      about_me: body.about_me || "",
+      building: body.building || "",
+      state: body.state || "",
+      city: body.city || "",
+      street: body.street || "",
+      postal_code: body.postal_code || "",
+      fb_handle: body.fb_handle || "",
+      twitter_handle: body.twitter_handle || "",
+      insta_handle: body.insta_handle || "",
+      linkedin_handle: body.linkedin_handle || "",
+      github: body.github || "",
+    });
     console.log(user_doc);
     console.log(solved_doc);
     console.log(tracked_scores_doc);
     console.log(leaderboard_doc);
+    console.log(dashboard_doc);
     res.send("User Created");
   } catch (err) {
     console.log(err);

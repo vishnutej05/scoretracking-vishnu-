@@ -2,60 +2,65 @@ const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
   roll_no: {
-    type: "string",
+    type: "String",
     required: true,
     unique: true,
   },
   name: {
-    type: "string",
-    // "required": true
+    type: String,
+    required: true,
   },
   password: {
-    type: "string",
-    // "required": true
+    type: String,
+    required: true,
   },
   email: {
-    type: "string",
-  },
-  // "courses_ref": {
-  //   "type": ["array", "reference"],
-  //   "items": {
-  //     "type": "ObjectId",
-  //     "ref": "Course"
-  //   }
-  // },
-  codechef_handle: {
-    type: "string",
+    type: "String",
     required: true,
+    unique: true,
+  },
+  username: {
+    type: "String",
+    required: true,
+    unique: true,
+  },
+  codechef_handle: {
+    type: String,
+    required: true,
+    unique: true,
   },
   leetcode_handle: {
-    type: "string",
+    type: String,
     required: true,
+    unique: true,
   },
   codeforces_handle: {
-    type: "string",
+    type: String,
     required: true,
+    unique: true,
   },
   hackerrank_handle: {
-    type: "string",
+    type: String,
     required: true,
+    unique: true,
   },
   spoj_handle: {
-    type: "string",
+    type: String,
     required: true,
+    unique: true,
   },
   leaderboard_ref: {
-    type: "ObjectId",
+    type: mongoose.Schema.Types.ObjectId,
     ref: "Leaderboard",
     required: true,
   },
   credential_ref: {
-    type: "ObjectId",
+    type: mongoose.Schema.Types.ObjectId,
     ref: "Tracked_Scores",
     required: true,
   },
   problems_solved: {
-    type: "ObjectId",
+    type: mongoose.Schema.Types.ObjectId,
     ref: "ProblemsSolvedByStudent",
     required: true,
   },

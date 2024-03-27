@@ -18,6 +18,9 @@ const regisrationrouter = require("./router/registration/register");
 const authenticaterouter = require("./router/registration/authenticate");
 const sendotprouter = require("./router/registration/send_otp");
 const getcredentialsrouter = require("./router/registration/get_creds");
+const updatephonerouter = require("./router/dashboard/update_phone");
+const updateemailrouter = require("./router/dashboard/update_email");
+const updatedetailsrouter = require("./router/dashboard/update_details");
 
 // models
 const Users = require("./models/user");
@@ -51,6 +54,9 @@ app.use("/register", regisrationrouter);
 app.use("/authenticate", authenticaterouter);
 app.use("/sendotp", sendotprouter);
 app.use("/getcreds", getcredentialsrouter);
+app.use("/uemail", updateemailrouter);
+app.use("/uphone", updatephonerouter);
+app.use("/udetails", updatedetailsrouter);
 
 app.get("/updateall", async (req, res) => {
   let mainf = require("./modules/sites/scoresupdataion");
