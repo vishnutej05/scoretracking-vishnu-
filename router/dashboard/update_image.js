@@ -1,8 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const multer = require("multer");
-// const bodyParser = require("body-parser");
-// const authenticate = require("../../middlewares/is_valid_user");
+const authenticate = require("../../middlewares/is_valid_user");
 
 let uploader = multer({
   storage: multer.diskStorage({}),
@@ -18,7 +17,7 @@ router.get("/", (req, res) => {
 router.post(
   "/",
   uploader.single("file"),
-  // authenticate,
+  authenticate,
   uploadcontroller.uploadFile
 );
 

@@ -11,7 +11,7 @@ const uploadFile = async (filePath) => {
     const result = await cloudinary.uploader.upload(filePath, {
       folder: "CodeG/images",
     });
-    console.log(result);
+    // console.log(result);
     return result.secure_url;
   } catch (error) {
     console.log(error.message);

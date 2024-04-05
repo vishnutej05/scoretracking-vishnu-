@@ -1,31 +1,35 @@
 const Dashboard = require("../models/dashboard");
-const Upload = require("../helpers/upload");
+const Upload = require("../helpers/upload_cloud");
 
 const uploadFile = async (req, res) => {
+  const rollno = req.rollno;
   try {
     const upload = await Upload.uploadFile(req.file.path);
-    console.log(upload);
+    // console.log(upload);
 
-    const dashboard = await Dashboard.findOne({});
+    const update_image = await Dashboard.findOneAndUpdate(
+      { rollno },
+      { profile: upload },
+      { new: true }
+    );
 
-    // Update the profile field with the uploaded file URL
-    dashboard.profile = upload.secure_url;
-
-    // Save the updated dashboard document
-    const updatedDashboard = await dashboard.save();
+    if (!update_image) {
+      return res
+        .status(404)
+        .send({ success: false, msg: "User not found in database" });
+    }
 
     res.send({
       success: true,
       msg: "File Uploaded Successfully!",
-      data: updatedDashboard,
+      data: update_image,
     });
   } catch (error) {
-    res.send({ success: false, msg: error.message });
+    console.log(error);
+    res.status(404).send({ success: false, msg: error.message });
   }
 };
 
 module.exports = {
   uploadFile,
 };
-
-// make oit work with authentication it shoulkd fetch user with rollno and update
