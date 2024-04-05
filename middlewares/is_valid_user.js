@@ -1,5 +1,8 @@
 //This mw function is used to verify the user via validating JWT Token use this for every http request by user
-const authenticate = (request, response, next) => {
+const jwt = require("jsonwebtoken");
+// require("dotenv").config();
+
+module.exports = function authenticate(request, response, next) {
   let jwtToken;
   const authHeader = request.headers["authorization"];
 
@@ -10,11 +13,11 @@ const authenticate = (request, response, next) => {
   if (jwtToken === undefined) {
     response.status(401).send("Invalid Access Token");
   } else {
-    jwt.verify(jwtToken, jwtSecretKey, async (error, payload) => {
+    jwt.verify(jwtToken, process.env.jwtSecretKey, async (error, payload) => {
       if (error) {
         response.status(401).send("Invalid Access Token");
       } else {
-        request.username = payload.username;
+        request.roll_no = payload.roll_no;
         next();
       }
     });

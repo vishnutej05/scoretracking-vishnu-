@@ -11,6 +11,10 @@ const dashboardSchema = new mongoose.Schema({
     unique: true,
     required: true,
   },
+  profile: {
+    type: String,
+    required: true,
+  },
   email: {
     type: String,
     required: true,

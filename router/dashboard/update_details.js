@@ -2,15 +2,16 @@ const express = require("express");
 const router = express.Router();
 
 const Dashboard = require("../../models/dashboard");
+const authenticate = require("../../middlewares/is_valid_user");
 
 router.get("/", (req, res) => {
   res.send("Update details page");
 });
 
-router.post("/", async (req, res) => {
+router.post("/", authenticate, async (req, res) => {
+  const rollno = req.roll_no;
   try {
     const {
-      rollno,
       name,
       email,
       dob,

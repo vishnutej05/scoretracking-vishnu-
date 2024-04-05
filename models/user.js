@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
   roll_no: {
-    type: "String",
+    type: String,
     required: true,
     unique: true,
   },
@@ -15,12 +15,12 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
   email: {
-    type: "String",
+    type: String,
     required: true,
     unique: true,
   },
   username: {
-    type: "String",
+    type: String,
     required: true,
     unique: true,
   },

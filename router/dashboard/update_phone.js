@@ -2,14 +2,16 @@ const express = require("express");
 const router = express.Router();
 
 const Dashboard = require("../../models/dashboard");
+const authenticate = require("../../middlewares/is_valid_user");
 
 router.get("/", (req, res) => {
   res.send("Update Phone Number");
 });
 
-router.post("/", async (req, res) => {
+router.post("/", authenticate, async (req, res) => {
+  const rollno = req.roll_no;
   try {
-    const { rollno, phone } = req.body;
+    const { phone } = req.body;
 
     // Check if the user already exists
     if (!(await Dashboard.exists({ roll_no: rollno }))) {

@@ -107,6 +107,7 @@ router.post("/", is_profile_available, is_valid_profile, async (req, res) => {
     let dashboard_doc = await dashboard_model.collection.insertOne({
       roll_no: body.rollno,
       user_name: body.username || "",
+      profile: body.profile || "",
       email: body.email || "",
       phone_number: body.phone_number || "",
       dob: body.dob || "",
@@ -123,6 +124,7 @@ router.post("/", is_profile_available, is_valid_profile, async (req, res) => {
       linkedin_handle: body.linkedin_handle || "",
       github: body.github || "",
     });
+
     console.log(user_doc);
     console.log(solved_doc);
     console.log(tracked_scores_doc);

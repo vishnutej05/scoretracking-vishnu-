@@ -4,13 +4,16 @@ const router = express.Router();
 const User = require("../../models/user");
 const Dashboard = require("../../models/dashboard");
 
+const authenticate = require("../../middlewares/is_valid_user");
+
 router.get("/", (req, res) => {
   res.send("Update Email");
 });
 
-router.post("/", async (req, res) => {
+router.post("/", authenticate, async (req, res) => {
+  const rollno = req.roll_no;
   try {
-    const { rollno, email } = req.body;
+    const { email } = req.body;
 
     // Update email in the User schema
     const updatedUser = await User.findOneAndUpdate(
@@ -32,7 +35,7 @@ router.post("/", async (req, res) => {
 
     res
       .status(200)
-      .json({ success: true, message: "Phone updated successfully" });
+      .json({ success: true, message: "Email updated successfully" });
   } catch (error) {
     console.error("Error updating email:", error);
     res.status(500).json({ success: false, error: error.message });
