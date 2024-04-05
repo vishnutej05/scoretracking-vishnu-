@@ -1,3 +1,4 @@
+//Updates the profile in the database
 const Dashboard = require("../models/dashboard");
 const Upload = require("../helpers/upload_cloud");
 

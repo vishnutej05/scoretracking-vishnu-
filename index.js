@@ -22,8 +22,10 @@ const updatephonerouter = require("./router/dashboard/update_phone");
 const updateemailrouter = require("./router/dashboard/update_email");
 const updatedetailsrouter = require("./router/dashboard/update_details");
 const updateImagerouter = require("./router/dashboard/update_image");
-// models
+const upcommingcontestrouter = require("./router/upcommingcontests");
+const jobsrouter = require("./router/fetchjobs");
 
+// models
 const Users = require("./models/user");
 const mainf = require("./modules/sites/scoresupdataion");
 
@@ -36,6 +38,7 @@ app.use(
     origin: "*",
   })
 );
+
 // parsers
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
@@ -59,6 +62,8 @@ app.use("/uemail", updateemailrouter);
 app.use("/uphone", updatephonerouter);
 app.use("/udetails", updatedetailsrouter);
 app.use("/uimage", updateImagerouter);
+app.use("/upcomming-contests", upcommingcontestrouter);
+app.use("/jobs", jobsrouter);
 
 app.get("/updateall", async (req, res) => {
   let mainf = require("./modules/sites/scoresupdataion");

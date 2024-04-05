@@ -109,7 +109,7 @@ router.post("/", is_profile_available, is_valid_profile, async (req, res) => {
       user_name: body.username || "",
       profile: body.profile || "",
       email: body.email || "",
-      phone_number: body.phone_number || "",
+      phone_number: body.phone || "",
       dob: body.dob || "",
       gender: body.gender || "",
       about_me: body.about_me || "",
