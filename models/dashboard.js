@@ -6,6 +6,10 @@ const dashboardSchema = new mongoose.Schema({
     unique: true,
     required: true,
   },
+  name: {
+    type: String,
+    required: true,
+  },
   user_name: {
     type: String,
     unique: true,
@@ -13,7 +17,11 @@ const dashboardSchema = new mongoose.Schema({
   },
   profile: {
     type: String,
-    required: true,
+    // required: true,
+  },
+  resume: {
+    type: String,
+    // required: true,
   },
   email: {
     type: String,
@@ -21,6 +29,7 @@ const dashboardSchema = new mongoose.Schema({
   },
   phone_number: {
     type: String,
+    required: true,
   },
   dob: {
     type: String,

@@ -14,10 +14,11 @@ module.exports = function authenticate(request, response, next) {
     response.status(401).send("Invalid Access Token");
   } else {
     jwt.verify(jwtToken, process.env.jwtSecretKey, async (error, payload) => {
+      // console.log(payload);
       if (error) {
         response.status(401).send("Invalid Access Token");
       } else {
-        request.roll_no = payload.roll_no;
+        request.rollno = payload.roll_no;
         next();
       }
     });

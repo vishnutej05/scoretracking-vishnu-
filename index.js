@@ -24,7 +24,7 @@ const updatedetailsrouter = require("./router/dashboard/update_details");
 const updateImagerouter = require("./router/dashboard/update_image");
 const upcommingcontestrouter = require("./router/upcommingcontests");
 const jobsrouter = require("./router/fetchjobs");
-
+const uploadresumerouter = require("./router/dashboard/update_resume");
 // models
 const Users = require("./models/user");
 const mainf = require("./modules/sites/scoresupdataion");
@@ -64,7 +64,7 @@ app.use("/udetails", updatedetailsrouter);
 app.use("/uimage", updateImagerouter);
 app.use("/upcomming-contests", upcommingcontestrouter);
 app.use("/jobs", jobsrouter);
-
+app.use("/uresume", uploadresumerouter);
 app.get("/updateall", async (req, res) => {
   let mainf = require("./modules/sites/scoresupdataion");
   let allusers = await Users.find({});

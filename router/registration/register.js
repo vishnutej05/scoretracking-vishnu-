@@ -106,8 +106,10 @@ router.post("/", is_profile_available, is_valid_profile, async (req, res) => {
     console.log(body.phone_number);
     let dashboard_doc = await dashboard_model.collection.insertOne({
       roll_no: body.rollno,
+      name: body.name || "",
       user_name: body.username || "",
       profile: body.profile || "",
+      resume: body.resume || "",
       email: body.email || "",
       phone_number: body.phone || "",
       dob: body.dob || "",

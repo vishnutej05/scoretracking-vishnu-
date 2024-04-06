@@ -1,21 +1,20 @@
-// Updates the profile in the database
+//Updates the pdf in the database
 const Dashboard = require("../models/dashboard");
-const Upload = require("../helpers/upload_files_cloud");
+const Upload = require("../helpers/upload_images_cloud");
 
 const uploadFile = async (req, res) => {
   const rollno = req.roll_no;
   try {
     const upload = await Upload.uploadFile(req.file.path);
-    console.log(upload);
-    const update_profile = await Dashboard.findOneAndUpdate(
+    // console.log(upload);
+
+    const update_image = await Dashboard.findOneAndUpdate(
       { rollno },
-      { resume: upload },
+      { profile: upload },
       { new: true }
     );
 
-    // console.log(update_profile);
-
-    if (!update_profile) {
+    if (!update_image) {
       return res
         .status(404)
         .send({ success: false, msg: "User not found in database" });
@@ -23,8 +22,8 @@ const uploadFile = async (req, res) => {
 
     res.send({
       success: true,
-      msg: "PDF Uploaded Successfully!",
-      data: update_profile,
+      msg: "File Uploaded Successfully!",
+      data: update_image,
     });
   } catch (error) {
     console.log(error);

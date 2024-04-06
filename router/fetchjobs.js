@@ -7,7 +7,7 @@ router.get("/", (req, res) => {
     keyword: "software engineer",
     location: "India",
     dateSincePosted: "past Week",
-    jobType: "full time",
+    jobType: "full time", //Type of position: full time, part time, contract, temporary, volunteer, internship
     remoteFilter: "remote",
     // salary: "100000",
     experienceLevel: "entry level",

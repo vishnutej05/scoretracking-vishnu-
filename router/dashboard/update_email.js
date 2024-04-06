@@ -11,7 +11,7 @@ router.get("/", (req, res) => {
 });
 
 router.post("/", authenticate, async (req, res) => {
-  const rollno = req.roll_no;
+  const rollno = req.rollno;
   try {
     const { email } = req.body;
 
