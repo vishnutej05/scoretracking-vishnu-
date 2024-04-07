@@ -3,13 +3,13 @@ const Dashboard = require("../models/dashboard");
 const Upload = require("../helpers/upload_files_cloud");
 
 const uploadFile = async (req, res) => {
-  const { rollno } = req.rollno;
-  console.log(rollno);
+  const rollno = req.rollno;
+  console.log("Rollno " + rollno);
   try {
     const upload = await Upload.uploadFile(req.file.path);
     console.log(upload);
     const update_profile = await Dashboard.findOneAndUpdate(
-      { rollno },
+      { roll_no: rollno },
       { resume: upload },
       { new: true }
     );

@@ -2,9 +2,8 @@ const express = require("express");
 const router = express.Router();
 
 const Dashboard = require("../../models/dashboard");
-const authenticate = require("../../middlewares/is_valid_user");
 
-router.get("/", authenticate, async (req, res) => {
+router.get("/", async (req, res) => {
   console.log(req.rollno);
   try {
     const dashboard = await Dashboard.findOne({ roll_no: req.rollno });

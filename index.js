@@ -41,6 +41,8 @@ app.use(
   })
 );
 
+//
+const authenticate = require("./middlewares/is_valid_user");
 // parsers
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
@@ -60,14 +62,14 @@ app.use("/register", regisrationrouter);
 app.use("/authenticate", authenticaterouter);
 app.use("/sendotp", sendotprouter);
 app.use("/getcreds", getcredentialsrouter);
-app.use("/uemail", updateemailrouter);
-app.use("/uphone", updatephonerouter);
-app.use("/udetails", updatedetailsrouter);
-app.use("/uimage", updateImagerouter);
+app.use("/uemail", authenticate, updateemailrouter);
+app.use("/uphone", authenticate, updatephonerouter);
+app.use("/udetails", authenticate, updatedetailsrouter);
+app.use("/uimage", authenticate, updateImagerouter);
 app.use("/upcomming-contests", upcommingcontestrouter);
 app.use("/jobs", jobsrouter);
-app.use("/uresume", uploadresumerouter);
-app.use("/dashboard", dashboardrouter);
+app.use("/uresume", authenticate, uploadresumerouter);
+app.use("/dashboard", authenticate, dashboardrouter);
 
 app.get("/updateall", async (req, res) => {
   let mainf = require("./modules/sites/scoresupdataion");

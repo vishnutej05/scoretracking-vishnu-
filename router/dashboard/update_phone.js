@@ -2,13 +2,13 @@ const express = require("express");
 const router = express.Router();
 
 const Dashboard = require("../../models/dashboard");
-const authenticate = require("../../middlewares/is_valid_user");
+// const authenticate = require("../../middlewares/is_valid_user");
 
 router.get("/", (req, res) => {
   res.send("Update Phone Number");
 });
 
-router.post("/", authenticate, async (req, res) => {
+router.post("/", async (req, res) => {
   const rollno = req.rollno;
   try {
     const { phone } = req.body;

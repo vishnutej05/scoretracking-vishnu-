@@ -4,13 +4,11 @@ const router = express.Router();
 const User = require("../../models/user");
 const Dashboard = require("../../models/dashboard");
 
-const authenticate = require("../../middlewares/is_valid_user");
-
 router.get("/", (req, res) => {
   res.send("Update Email");
 });
 
-router.post("/", authenticate, async (req, res) => {
+router.post("/", async (req, res) => {
   const rollno = req.rollno;
   try {
     const { email } = req.body;

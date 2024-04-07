@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const multer = require("multer");
-const authenticate = require("../../middlewares/is_valid_user");
+// const authenticate = require("../../middlewares/is_valid_user");
 
 let uploader = multer({
   storage: multer.diskStorage({}),
@@ -10,7 +10,7 @@ let uploader = multer({
 
 const uploadcontroller = require("../../controllers/uploadimages");
 const Dashboard = require("../../models/dashboard");
-router.get("/", authenticate, async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const user = await Dashboard.findOne({ roll_no: req.rollno });
     if (!user.profile) {
@@ -22,11 +22,6 @@ router.get("/", authenticate, async (req, res) => {
   } catch (error) {}
 });
 
-router.post(
-  "/",
-  authenticate,
-  uploader.single("file"),
-  uploadcontroller.uploadFile
-);
+router.post("/", uploader.single("file"), uploadcontroller.uploadFile);
 
 module.exports = router;
