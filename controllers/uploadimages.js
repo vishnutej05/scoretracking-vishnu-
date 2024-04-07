@@ -3,7 +3,8 @@ const Dashboard = require("../models/dashboard");
 const Upload = require("../helpers/upload_images_cloud");
 
 const uploadFile = async (req, res) => {
-  const rollno = req.roll_no;
+  const rollno = req.rollno;
+  console.log(rollno);
   try {
     const upload = await Upload.uploadFile(req.file.path);
     // console.log(upload);

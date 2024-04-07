@@ -7,7 +7,7 @@ const uploadFile = async (req, res) => {
   console.log("Rollno " + rollno);
   try {
     const upload = await Upload.uploadFile(req.file.path);
-    console.log(upload);
+    // console.log(upload);
     const update_profile = await Dashboard.findOneAndUpdate(
       { roll_no: rollno },
       { resume: upload },
