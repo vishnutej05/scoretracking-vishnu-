@@ -11,7 +11,7 @@ module.exports = async function authenticate(request, response, next) {
   }
 
   if (jwtToken === undefined) {
-    response.status(401).send("Invalid Access Token");
+    response.status(401).send("Authentication is not given properly.");
   } else {
     jwt.verify(jwtToken, process.env.jwtSecretKey, async (error, payload) => {
       // console.log(payload);
