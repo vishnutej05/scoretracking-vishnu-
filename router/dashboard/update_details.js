@@ -10,6 +10,7 @@ router.get("/", (req, res) => {
 
 router.post("/", authenticate, async (req, res) => {
   const rollno = req.rollno;
+  // console.log(rollno);
   try {
     const {
       name,

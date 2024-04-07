@@ -18,7 +18,7 @@ router.get("/", (req, res) => {
 
   linkedIn.query(queryOptions).then((response) => {
     res.json(response);
-    console.log(response.length);
+    console.log(response);
   });
 });
 

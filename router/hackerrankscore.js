@@ -1,11 +1,10 @@
-const { hackerrankstat } = require('../controllers/hackerrankcontroller');
-const router = require('express').Router();
+const { hackerrankstat } = require("../controllers/hackerrankcontroller");
+const router = require("express").Router();
 
+router.get("/:handle", hackerrankstat);
 
-
-router.get("/:handle", hackerrankstat); 
-
-router.get('/', (req,res)=>{
-    res.send('Hackerrank');
+router.get("/", (req, res) => {
+  res.send("Hackerrank");
 });
+
 module.exports = router;
