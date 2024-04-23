@@ -17,7 +17,7 @@ router.get("/", async (req, res) => {
       codechef: row.cc_leaderboard_score,
       hackerrank: row.hr_leaderboard_score,
       spoj: row.spoj_leaderboard_score,
-      totalScore: row.total_leaderboard_score,
+      totalScore: parseInt(row.total_leaderboard_score),
       rank: rank++,
     };
   });
