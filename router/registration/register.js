@@ -125,6 +125,7 @@ router.post("/", is_profile_available, is_valid_profile, async (req, res) => {
       insta_handle: body.insta_handle || "",
       linkedin_handle: body.linkedin_handle || "",
       github: body.github || "",
+      certificates: [],
     });
 
     console.log(user_doc);

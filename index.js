@@ -26,7 +26,7 @@ const upcommingcontestrouter = require("./router/upcommingcontests");
 const jobsrouter = require("./router/fetchjobs");
 const uploadresumerouter = require("./router/dashboard/update_resume");
 const dashboardrouter = require("./router/dashboard/get_dashboard");
-
+const uploadCertificatesRouter = require("./router/dashboard/upload_certificates");
 // models
 const Users = require("./models/user");
 const mainf = require("./modules/sites/scoresupdataion");
@@ -70,6 +70,7 @@ app.use("/upcomming-contests", upcommingcontestrouter);
 app.use("/jobs", jobsrouter);
 app.use("/uresume", authenticate, uploadresumerouter);
 app.use("/dashboard", authenticate, dashboardrouter);
+app.use("/ucertificate", authenticate, uploadCertificatesRouter);
 
 app.get("/updateall", async (req, res) => {
   let mainf = require("./modules/sites/scoresupdataion");

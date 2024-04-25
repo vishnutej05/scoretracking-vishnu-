@@ -70,6 +70,7 @@ const dashboardSchema = new mongoose.Schema({
   github: {
     type: String,
   },
+  certificates: [{ type: String, ref: "certificate" }],
 });
 
 dashboardSchema.index({ roll_no: 1 });
