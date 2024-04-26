@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fill Chey Ra Bhai</title>
+</head>
+<body>
+    <form action="/submit-form" method="post" id="registerForm">
+        <label for="rollno">Roll No:</label>
+        <input type="text" id="rollno" name="rollno"><br>
+      
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name"><br>
+      
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password"><br>
+      
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email"><br>
+      
+        <label for="phone">Phone:</label>
+        <input type="tel" id="phone" name="phone"><br>
+      
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username"><br>
+      
+        <label for="codechef">CodeChef:</label>
+        <input type="text" id="codechef" name="codechef"><br>
+      
+        <label for="leetcode">LeetCode:</label>
+        <input type="text" id="leetcode" name="leetcode"><br>
+      
+        <label for="codeforces">Codeforces:</label>
+        <input type="text" id="codeforces" name="codeforces"><br>
+      
+        <label for="hackerrank">HackerRank:</label>
+        <input type="text" id="hackerrank" name="hackerrank"><br>
+      
+        <label for="spoj">Spoj:</label>
+        <input type="text" id="spoj" name="spoj"><br>
+      
+        <input type="submit" value="Submit">
+      </form>
+      
+      <script>
+      document.getElementById('registerForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+      
+        const formData = {
+          rollno: document.getElementById('rollno').value,
+          name: document.getElementById('name').value,
+          password: document.getElementById('password').value,
+          email: document.getElementById('email').value,
+          phone: document.getElementById('phone').value,
+          username: document.getElementById('username').value,
+          codechef: document.getElementById('codechef').value,
+          leetcode: document.getElementById('leetcode').value,
+          codeforces: document.getElementById('codeforces').value,
+          hackerrank: document.getElementById('hackerrank').value,
+          spoj: document.getElementById('spoj').value
+        };
+      
+        fetch('https://scoretracking-vishnu.onrender.com/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(formData)
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Success:', data);
+          alert('Registration successful!');
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+          alert('Registration failed. Please try again.');
+        });
+      });
+      </script>
+        
+</body>
+</html>

@@ -37,6 +37,7 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/", is_profile_available, is_valid_profile, async (req, res) => {
+  // console.log(new Date());
   let body = req.body;
   try {
     let roll_no = body.rollno;
@@ -133,6 +134,7 @@ router.post("/", is_profile_available, is_valid_profile, async (req, res) => {
     console.log(tracked_scores_doc);
     console.log(leaderboard_doc);
     console.log(dashboard_doc);
+    // console.log(new Date());
     res.send("User Created");
   } catch (err) {
     console.log(err);
