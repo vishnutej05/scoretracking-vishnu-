@@ -49,7 +49,69 @@ app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 
 // routes
 app.get("/", (req, res) => {
-  res.send("Welcome to the server");
+  const routeDescriptions = `
+    /codechef:
+    Route for handling requests related to CodeChef.
+    May include endpoints for fetching CodeChef contest information, user submissions, etc.
+
+    /leetcode:
+    Route for handling requests related to LeetCode.
+    May include endpoints for fetching LeetCode problem sets, user submissions, etc.
+
+    /hackerrank:
+    Route for handling requests related to HackerRank.
+    May include endpoints for fetching HackerRank challenges, user submissions, etc.
+
+    /spoj:
+    Route for handling requests related to SPOJ (Sphere Online Judge).
+    May include endpoints for fetching SPOJ problems, user submissions, etc.
+
+    /codeforces:
+    Route for handling requests related to Codeforces.
+    May include endpoints for fetching Codeforces contests, problems, user submissions, etc.
+
+    /leaderboard:
+    Route for retrieving a sorted leaderboard.
+    May include endpoints for fetching leaderboard rankings, scores, etc.
+
+    /register:
+    Route for user registration/authentication.
+    May include endpoints for user registration, account creation, etc.
+
+    /authenticate:
+    Route for user authentication.
+    May include endpoints for user login, session management, etc.
+
+    /sendotp:
+    Route for sending OTP (One-Time Password) for authentication.
+    May include endpoints for sending OTP to users' registered email or phone number.
+
+    /getcreds:
+    Route for retrieving user credentials.
+    May include endpoints for fetching user credentials like email, phone number, etc.
+
+    /upcomming-contests:
+    Route for fetching upcoming contests.
+    May include endpoints for retrieving information about upcoming coding contests.
+
+    /jobs:
+    Route for handling job-related requests.
+    May include endpoints for fetching job listings, applying for jobs, etc.
+
+    /uresume:
+    Route for uploading user resumes.
+    May include endpoints for users to upload and manage their resumes.
+
+    /dashboard:
+    Route for user dashboard functionality.
+    May include endpoints for fetching user-specific data to display on the dashboard.
+
+    /ucertificate:
+    Route for uploading user certificates.
+    May include endpoints for users to upload and manage their certificates.
+  `;
+
+  res.send(routeDescriptions);
 });
 
 app.use("/codechef", ccrouter);
