@@ -7,6 +7,8 @@ const { databaseconnect } = require("./dbconfig");
 
 //starter problem model
 const { Problems } = require("./models/all_problems");
+const { main } = require("./temp");
+main();
 
 const ccrouter = require("./router/codechefscores");
 const lcrouter = require("./router/leetcodescores");
@@ -30,7 +32,8 @@ const uploadCertificatesRouter = require("./router/dashboard/upload_certificates
 // models
 const Users = require("./models/user");
 const mainf = require("./modules/sites/scoresupdataion");
-
+const courserouter = require("./router/courseworkroutes/coureworkrouter");
+const coursesfetchrouter = require("./router/courseworkroutes/coursefetchrouter");
 // dbconnection
 databaseconnect();
 
@@ -111,7 +114,6 @@ app.get("/", (req, res) => {
     - Include endpoints for users to upload and manage their certificates.
   `;
 
-  // Inline CSS style to format the text
   const styledRouteDescriptions = `<pre style="font-family: Arial, sans-serif;">${routeDescriptions}</pre>`;
 
   res.send(styledRouteDescriptions);
@@ -136,7 +138,7 @@ app.use("/jobs", jobsrouter);
 app.use("/uresume", authenticate, uploadresumerouter);
 app.use("/dashboard", authenticate, dashboardrouter);
 app.use("/ucertificate", authenticate, uploadCertificatesRouter);
-
+app.use("/fetch/courses", coursesfetchrouter);
 app.get("/updateall", async (req, res) => {
   let mainf = require("./modules/sites/scoresupdataion");
   let allusers = await Users.find({});
